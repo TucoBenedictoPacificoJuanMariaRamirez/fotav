@@ -29,11 +29,11 @@ settings =
 	--
 	iphone =
 	{
-		xcassets = "Images.xcassets",
+		xcassets = "ios/Images.xcassets",
 		plist =
 		{
 			UIStatusBarHidden = false,
-			UILaunchStoryboardName = "LaunchScreen",
+			UILaunchStoryboardName = "ios/LaunchScreen",
 		},
 	},
 
@@ -51,7 +51,7 @@ settings =
 	excludeFiles =
 	{
 		-- Exclude unnecessary files for each platform
-		all = { "Icon.png", "Icon-*dpi.png", "Images.xcassets", },
-		android = { "LaunchScreen.storyboardc", },
+		all = { "Icon.png", "Icon-*dpi.png", "ios/Images.xcassets", ".git" },
+		android = { "ios/LaunchScreen.storyboardc", },
 	},
 }
