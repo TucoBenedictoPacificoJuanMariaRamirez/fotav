@@ -11,6 +11,7 @@ widget = require("widget")
 local mainMenuUI = require("ui.screens.mainMenu")
 local mapsScreenUI = require("ui.screens.maps")
 
+-- this stores the current level object (from the levels array below)
 currentLevel = nil
 
 -- loading levels

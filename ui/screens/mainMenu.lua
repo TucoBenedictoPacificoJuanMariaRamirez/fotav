@@ -19,16 +19,20 @@ local function init()
 	mainText = display.newText("MAIN SCREEN", display.contentCenterX, display.contentCenterY, native.systemFont, 30)
 	mainText:setFillColor(128, 23, 170)
 
-	toMapsBtn = widget.newButton(
-		{
-		label = "MAPS",
-		x = display.contentCenterX,
-		y = display.contentCenterY + 60,
-		onEvent = handleEvent,
-		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
-		shape = "roundedRect"
-		})
-	initialized = true
+	if initialized then
+		toMapsBtn.isVisible = true
+	else
+		toMapsBtn = widget.newButton(
+			{
+			label = "MAPS",
+			x = display.contentCenterX,
+			y = display.contentCenterY + 60,
+			onEvent = handleEvent,
+			fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
+			shape = "roundedRect"
+			})
+		initialized = true
+	end
 end
 mainMenu.init = init
 
