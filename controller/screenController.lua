@@ -11,8 +11,15 @@ widget = require("widget")
 local mainMenuUI = require("ui.screens.mainMenu")
 local mapsScreenUI = require("ui.screens.maps")
 
+currentLevel = nil
+
+-- loading levels
+local levels = {}
+for i = 1, 4 do
+	levels[i] = require("ui.levels.level" .. tostring(i))
+end
+
 local function mainScreen()
-	-- Use pcall in case we get nil error
 	mapsScreenUI.hide()
 	-- This loads all the objects in the mainMenu.lua
 	mainMenuUI.init()
@@ -21,17 +28,20 @@ end
 screenController.mainScreen = mainScreen
 
 local function mapsScreen()
-	-- Use pcall in case we get nil error
 	mainMenuUI.hide()
+	if currentLevel ~= nil then
+		currentLevel.hide()
+	end
 	-- This loads all the objects in the maps.lua
 	mapsScreenUI.init()
 	-- code
 end
 screenController.mapsScreen = mapsScreen
 
-local function levelScreen()
-	-- code
-	-- TODO
+local function levelScreen(level)
+	mapsScreenUI.hide()
+	currentLevel = levels[tonumber(level)]
+	levels[tonumber(level)].init()
 end
 screenController.levelScreen = levelScreen
 
