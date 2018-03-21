@@ -1,0 +1,27 @@
+c9ecff - égkék
+ead67f - napsárga
+06914c - sötétebb zöld ház
+ba5d64 - piros ház
+806499 - lila 
+aac660 - világos zöld 
+fb9a3b - narancssárga
+0071bc - betû-ikonok színe
+2e3192 - sötétebb kék kocsi
+808080 - út szürke
+8cc63f - csõ világos zöld
+009245 - csõ sötét zöld
+ffba2e - csõ világos sárga
+b58126 - csõ sötét sárga
+0071bc - csõ világos kék
+2e3192 - csõ sötét kék
+8c6239 - föld barna
+603813 - sárdarab barna/virágláda barna 
+
+edb2b2 - piros házhoz ablakháttér/lakásszín
+
+Ablakok: fceea8 - sárga
+	e0e0e0 - ppiszkosfehér
+	c9ecff - égkék
+
+
+         
