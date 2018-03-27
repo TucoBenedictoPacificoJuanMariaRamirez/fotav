@@ -6,6 +6,7 @@
 local level = {}
 
 -- load logic for this map
+local logic = require("logic.logic")
 
 local initialized = false
 
@@ -38,6 +39,8 @@ local function init()
 			})
 		initialized = true
 	end
+	
+	logic.createLevel(1)
 end
 level.init = init
 

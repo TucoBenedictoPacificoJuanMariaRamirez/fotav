@@ -1,4 +1,7 @@
-require("gameLogic.mapProperties")
+-- This file handles the logic of the main gameplay and
+-- provides the necessary solutions for that
+
+require("logic.mapProperties")
 
 --[[
     TODO:
@@ -6,6 +9,8 @@ require("gameLogic.mapProperties")
         - main thread function for decrementing house temps
         - main thread timer function for the time limit
 --]]
+
+local logic = {}
 
 level = nil
 time = nil
@@ -15,26 +20,30 @@ houses = nil
 --loading a level, init level attributes
 function createLevel(levelNum)
     print(" ")
-    print ("Creating level "..levelNum.."...")
-    level = maps['l'..levelNum]
+    print ("Creating level " .. levelNum .. "...")
+    level = maps['l' .. levelNum]
     time = level.time
     pipes = level.pipes
     houses = level.houses
-    local logic = {
+    --[[local logic = {
         level=level, time=time, pipes=pipes, houses=houses
-    }
+    }--]]
 
     return logic
 end
+logic.createLevel = createLevel
 
 --called by the eventListener on tap
 function pipeTap(pipe)
-    addTemp = pipe.temp/10
+    addTemp = pipe.temp / 10
     for i,v in ipairs(pipe.houses) do
         modifyHouseTemp(v, addTemp)
     end
 end
+logic.pipeTap = pipeTap
 
-function modifyHouseTemp(house, value)
+local function modifyHouseTemp(house, value)
     houses[house].temp = houses[house].temp + value
 end
+
+return logic
