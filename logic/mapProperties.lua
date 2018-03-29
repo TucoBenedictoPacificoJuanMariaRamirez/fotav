@@ -5,7 +5,8 @@
 maps =
 {
     l1 = { --level 1
-        decrease = 1,
+        limit = 4, --error limit
+        decrease = 1, --decrease of house temperature per second
         time = 180, --level gametime
         pipes = { --table of pipes
             p1 = {
@@ -23,6 +24,7 @@ maps =
     },
 
     l2 = {
+        limit = 4,
         decrease = 2,
         time = 180, 
         pipes = { 
