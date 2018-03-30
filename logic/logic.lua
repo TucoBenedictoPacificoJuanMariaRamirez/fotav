@@ -73,6 +73,7 @@ function rating()
     for i in currentTemps do
         optimal = optimal + 1
     end
+
     
     -- ***: every houseTemp is optimal
     if optimal==count then
