@@ -18,7 +18,7 @@ maps =
         },
         houses = {
             h1 = {
-                temp = 50
+                goal = 50 --goal temperature
             }
         }
     },
@@ -43,10 +43,10 @@ maps =
         },
         houses = {
             h1 = {
-                temp = 60
+                goal = 60
             },
             h2 = {
-                temp = 25
+                goal = 25
             }
         }
     }
