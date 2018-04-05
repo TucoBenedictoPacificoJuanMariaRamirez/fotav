@@ -5,6 +5,7 @@
 maps =
 {
     l1 = { --level 1
+        envTemp = 20, --environment temperature
         limit = 4, --error limit
         decrease = 1, --decrease of house temperature per second
         time = 180, --level gametime
@@ -24,6 +25,7 @@ maps =
     },
 
     l2 = {
+        envTemp = 20,
         limit = 4,
         decrease = 2,
         time = 180, 

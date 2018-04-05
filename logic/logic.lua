@@ -19,6 +19,7 @@ decrease = nil
 time = nil
 pipes = nil
 houses = nil
+isEnd = false
 count = 0
 
 --storing current house temperatures (table of {house, temp})
@@ -41,7 +42,10 @@ function createLevel(levelNum)
         count = count + 1
     end
 
-    return logic
+    logicTimer(time)
+    endCheck()
+
+
 end
 logic.createLevel = createLevel
 
@@ -71,9 +75,10 @@ function rating()
     local optimal = 0
 
     for i in currentTemps do
-        optimal = optimal + 1
+        if isWithinError(i) then
+            optimal = optimal + 1
+        end
     end
-
     
     -- ***: every houseTemp is optimal
     if optimal==count then
@@ -100,9 +105,42 @@ function isWithinError(house)
     return (c > g-limit  and  c < g+limit)
 end
 
-function cooling()
+function cooling(temp)
     for i in currentTemps do
-        currentTemps.i = currentTemps.i -1
+        if currentTemps.i - temp > level.envTemp then
+            currentTemps.i = currentTemps.i - temp
+        else 
+            currentTemps.i = level.envTemp
+        end
+    end
+end
+
+function logicTimer(count)
+    t = timer.performWithDelay(1000
+            , function 
+                count = count - 1
+                print(count)
+                cooling(level.decrease)
+              end
+            , count
+        )
+    if isEnd then
+        timer.cancel(t)
+    end
+end
+
+function endCheck()
+    t = timer.performWithDelay(200
+            , function
+                if rating()==3 then
+                    isEnd = true
+                    --switch to endscreen
+                end
+              end
+        )
+
+    if isEnd then
+        timer.cancel(t)
     end
 end
 
