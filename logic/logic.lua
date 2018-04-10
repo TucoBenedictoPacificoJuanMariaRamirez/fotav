@@ -35,7 +35,7 @@ function createLevel(levelNum)
     time = level.time
     pipes = level.pipes
     houses = level.houses
-    
+
     --init currentTemps
     for i in houses do
         currentTemps.insert(i, 10) --hardcoded basic environmet temperature (v2.0 winter?)
@@ -61,7 +61,7 @@ logic.pipeTap = pipeTap
 function modifyTempOnTap(house, pipe)
     --Mi van, ha 40, 20 fokos vizek vannak,
     --current = 30, és rányomunk a 20-ra?
-    
+
     ----Tfh. a házban lévő víz hőmerséklete t1, mennyisége V1,
     ----     a csőben lévő víz hőmérséklete t2, mennyisége V2
     ----
@@ -71,7 +71,7 @@ function modifyTempOnTap(house, pipe)
 end
 
 --called when no time left (lvl endscreen)
-function rating()   
+function rating()
     local optimal = 0
 
     for i in currentTemps do
@@ -79,7 +79,7 @@ function rating()
             optimal = optimal + 1
         end
     end
-    
+
     -- ***: every houseTemp is optimal
     if optimal==count then
         return 3
@@ -91,7 +91,7 @@ function rating()
     -- *: at least the third of the houseTemps are optimal
     elseif optimal > math.ceil(count/3) then
         return 1
-    -- 0: 
+    -- 0:
     else
         return 0
     end
@@ -109,7 +109,7 @@ function cooling(temp)
     for i in currentTemps do
         if currentTemps.i - temp > level.envTemp then
             currentTemps.i = currentTemps.i - temp
-        else 
+        else
             currentTemps.i = level.envTemp
         end
     end
@@ -117,7 +117,7 @@ end
 
 function logicTimer(count)
     t = timer.performWithDelay(1000
-            , function 
+            , function ()
                 count = count - 1
                 print(count)
                 cooling(level.decrease)
@@ -131,7 +131,7 @@ end
 
 function endCheck()
     t = timer.performWithDelay(200
-            , function
+            , function ()
                 if rating()==3 then
                     isEnd = true
                     --switch to endscreen
