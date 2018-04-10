@@ -18,3 +18,6 @@ display.remove(loadingText)
 -- Pass control to the screenController file
 screenController = require("controller.screenController")
 screenController.mainScreen()
+
+
+require "tests.testsmain"
