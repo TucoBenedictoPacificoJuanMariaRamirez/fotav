@@ -14,12 +14,13 @@ require("math")
 local logic = {}
 
 level = nil
-limit = nil
-decrease = nil
-time = nil
-pipes = nil
-houses = nil
-isEnd = false
+logic.limit = nil
+logic.decrease = nil
+logic.time = nil
+logic.pipes = nil
+logic.houses = nil
+logic.isEnd = false
+logic.timer = nil
 count = 0
 
 --storing current house temperatures (table of {house, temp})
@@ -27,41 +28,45 @@ currentTemps = {}
 
 --loading a level, init level attributes
 function createLevel(levelNum)
-    print(" ")
+    print("----------------------------------------------")
     print ("Creating level " .. levelNum .. "...")
     level = maps['l' .. levelNum]
-    limit = level.limit
-    decrease = level.decrease
-    time = level.time
-    pipes = level.pipes
-    houses = level.houses
+    logic.limit = level.limit
+    logic.decrease = level.decrease
+    logic.time = level.time
+    logic.pipes = level.pipes
+    logic.houses = level.houses
 
     --init currentTemps
-    for i in houses do
-        currentTemps.insert(i, 10) --hardcoded basic environmet temperature (v2.0 winter?)
+    
+    print("Initializating currentTemps...")
+    for key, value in pairs(logic.houses) do
+        table.insert(currentTemps, {key, level.envTemp})
         count = count + 1
     end
 
+    print("currentTemps after initialization: ")
+    print2D(currentTemps)
+
     logicTimer(time)
     endCheck()
-
 
 end
 logic.createLevel = createLevel
 
 --called by the eventListener on tap
-function pipeTap(pipe)
-    addTemp = pipe.temp / 10
-    for i,v in ipairs(pipe.houses) do
-        modifyTempOnTap(v, i)
-    end
+function pipeTap(label)
+    --print2D(logic.pipes)
+    --for i,v in ipairs(logic.pipes[label].houses) do
+    --        modifyTempOnTap(v, i)
+    --end
 end
 logic.pipeTap = pipeTap
 
 function modifyTempOnTap(house, pipe)
     --Mi van, ha 40, 20 fokos vizek vannak,
     --current = 30, és rányomunk a 20-ra?
-
+    
     ----Tfh. a házban lévő víz hőmerséklete t1, mennyisége V1,
     ----     a csőben lévő víz hőmérséklete t2, mennyisége V2
     ----
@@ -71,14 +76,17 @@ function modifyTempOnTap(house, pipe)
 end
 
 --called when no time left (lvl endscreen)
-function rating()
+function rating()   
     local optimal = 0
 
-    for i in currentTemps do
-        if isWithinError(i) then
-            optimal = optimal + 1
+    for key, value in pairs(currentTemps) do
+        for key2, value2 in pairs(value) do
+            house = currentTemps[key][key2]
+            if string.sub(house,1,1)=="h" and isWithinError(house) then
+                optimal = optimal+1
+            end
         end
-    end
+	end
 
     -- ***: every houseTemp is optimal
     if optimal==count then
@@ -91,7 +99,7 @@ function rating()
     -- *: at least the third of the houseTemps are optimal
     elseif optimal > math.ceil(count/3) then
         return 1
-    -- 0:
+    -- 0: 
     else
         return 0
     end
@@ -100,29 +108,48 @@ end
 --returns whether the current houseTemp is acceptable
 function isWithinError(house)
     -- | goal-current | < limit  <===>  current > goal-limit  and  current < goal+limit
-    local c = currentTemps.house
-    local g = houses.house.goal
-    return (c > g-limit  and  c < g+limit)
+    
+    c = getCurrentTempOf(tostring(house))
+    print("logic.houses[house].goal")
+    print(logic.houses[house].goal)
+    
+    local g = tonumber(logic.houses[house].goal)
+    local l = tonumber(logic.limit)
+
+    return (c > g-l  and  c < g+l)
 end
 
-function cooling(temp)
-    for i in currentTemps do
-        if currentTemps.i - temp > level.envTemp then
-            currentTemps.i = currentTemps.i - temp
-        else
-            currentTemps.i = level.envTemp
+function getCurrentTempOf(houseName)
+    for key, value in pairs(currentTemps) do
+        --print("    key: "..key)
+        for key2, value2 in pairs(value) do
+            if value2==house then
+                --print("Current temperature of "..house.." is: "..currentTemps[key][key2+1])
+                return currentTemps[key][key2+1]
+            end
         end
     end
 end
 
+--TODO: currentTemps hivatkozás rossz
+function cooling(temp)
+    -- for i in currentTemps do
+    --     if currentTemps.i - temp > level.envTemp then
+    --         currentTemps.i = currentTemps.i - temp
+    --     else 
+    --         currentTemps.i = level.envTemp
+    --     end
+    -- end
+end
+
 function logicTimer(count)
     t = timer.performWithDelay(1000
-            , function ()
-                count = count - 1
-                print(count)
+            , function() 
+                c = c - 1
+                print(c)
                 cooling(level.decrease)
               end
-            , count
+            , c
         )
     if isEnd then
         timer.cancel(t)
@@ -131,7 +158,7 @@ end
 
 function endCheck()
     t = timer.performWithDelay(200
-            , function ()
+            , function()
                 if rating()==3 then
                     isEnd = true
                     --switch to endscreen
@@ -141,6 +168,15 @@ function endCheck()
 
     if isEnd then
         timer.cancel(t)
+    end
+end
+
+function print2D( table )
+    for key, value in pairs(table) do
+        print("    key: "..key)
+        for key2, value2 in pairs(value) do
+            print("        value.key2: "..key2.."    value.value2: "..value2)
+        end
     end
 end
 

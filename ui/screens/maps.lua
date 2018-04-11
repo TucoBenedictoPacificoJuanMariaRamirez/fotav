@@ -181,10 +181,10 @@ local function hide()
 	if initialized then
 		display.remove(mapsText)
 		level1Btn.isVisible = false
-		level2Btn.isVisible = false
+		--[[ level2Btn.isVisible = false
 		level3Btn.isVisible = false
 		level4Btn.isVisible = false
-		mainMenuBtn.isVisible = false
+		mainMenuBtn.isVisible = false ]]
 		zoomInBtn.isVisible = false
 		zoomOutBtn.isVisible = false
 	end

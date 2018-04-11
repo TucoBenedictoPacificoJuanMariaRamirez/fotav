@@ -20,27 +20,24 @@ local function handleBackToMap(event)
 end
 
 local function init()
-	text = display.newText("LEVEL 1", display.contentCenterX, display.contentCenterY - 120, native.systemFont, 30)
-	text:setFillColor(56, 150, 90)
-	
-	if initialized then
-		mapsBtn.isVisible = true
-	else
-		mapsBtn = widget.newButton(
-			{
-			label = "BACK TO MAPS",
-			x = display.contentCenterX,
-			y = display.contentCenterY + 200,
-			width = 150,
-			height = 35,
-			onEvent = handleBackToMap,
-			fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
-			shape = "roundedRect"
-			})
-		initialized = true
-	end
-	
 	logic.createLevel(1)
+	bg = display.newImageRect("assets/background.png", 360, 570)
+	levelTime = display.newText(logic.time, display.contentCenterX, 100, native.systemFont, 30)
+	
+	cso = widget.newButton(
+		{
+		label = "p1",
+		x = display.contentCenterX,
+		y = display.contentCenterY + 200,
+		width = 150,
+		height = 35,
+		onEvent = logic.pipeTap(label),
+		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
+		shape = "roundedRect"
+		})
+	
+	houseTemp = display.newText(currentTemps[1][2], display.contentCenterX, cso.y-70, native.systemFone, 30)
+		
 end
 level.init = init
 
