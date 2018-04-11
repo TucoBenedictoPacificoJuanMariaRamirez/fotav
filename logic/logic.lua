@@ -140,7 +140,6 @@ function cooling(temp)
     --         currentTemps.i = level.envTemp
     --     end
     -- end
-    ----asd
 end
 
 function logicTimer(count)
