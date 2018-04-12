@@ -13,6 +13,8 @@ local initialized = false
 local text = nil
 local mapsBtn = nil
 
+local tempText = nil
+
 local function handleBackToMap(event)
 	if ("ended" == event.phase) then
 		screenController.mapsScreen()
@@ -20,29 +22,49 @@ local function handleBackToMap(event)
 end
 
 local function init()
-	text = display.newText("LEVEL 1", display.contentCenterX, display.contentCenterY - 120, native.systemFont, 30)
-	text:setFillColor(56, 150, 90)
-	
-	if initialized then
-		mapsBtn.isVisible = true
-	else
-		mapsBtn = widget.newButton(
-			{
-			label = "BACK TO MAPS",
-			x = display.contentCenterX,
-			y = display.contentCenterY + 200,
-			width = 150,
-			height = 35,
-			onEvent = handleBackToMap,
-			fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
-			shape = "roundedRect"
-			})
-		initialized = true
-	end
-	
 	logic.createLevel(1)
+	bg = display.newImageRect("assets/background.png", 360, 570)
+	
+	
+	cso = widget.newButton(
+		{
+		id = 1,
+		x = display.contentCenterX,
+		y = display.contentCenterY + 200,
+		width = 150,
+		height = 35,
+		onEvent = logic.pipeTap,
+		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
+		shape = "roundedRect"
+		})
+	
+	logicTimer(logic.time)
+	levelTimer(logic.time)
+	endCheck()
+	
+	
+	
+
+	print("rating: "..rating())
+		
 end
 level.init = init
+
+function levelTimer(count)
+	ms = 10
+    t = timer.performWithDelay(ms, function () updateText() end, count*1000/ms)
+    if logic.isEnd then
+        timer.cancel(t)
+    end
+end
+
+function updateText()
+	display.remove(tempText)
+	tempText = display.newText(logic.getCurrentTempOf("h1"), display.contentCenterX, cso.y-70, native.systemFone, 30)
+	
+	display.remove(levelTime)
+	levelTime = display.newText(logic.time, display.contentCenterX, 100, native.systemFont, 30)
+end
 
 local function hide()
 	if initialized then
