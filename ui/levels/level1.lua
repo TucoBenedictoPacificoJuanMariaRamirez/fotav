@@ -13,6 +13,8 @@ local initialized = false
 local text = nil
 local mapsBtn = nil
 
+local tempText = nil
+
 local function handleBackToMap(event)
 	if ("ended" == event.phase) then
 		screenController.mapsScreen()
@@ -22,24 +24,44 @@ end
 local function init()
 	logic.createLevel(1)
 	bg = display.newImageRect("assets/background.png", 360, 570)
-	levelTime = display.newText(logic.time, display.contentCenterX, 100, native.systemFont, 30)
+	
 	
 	cso = widget.newButton(
 		{
-		label = "p1",
+		id = 1,
 		x = display.contentCenterX,
 		y = display.contentCenterY + 200,
 		width = 150,
 		height = 35,
-		onEvent = logic.pipeTap(label),
+		onPress = logic.pipeTap,
 		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
 		shape = "roundedRect"
 		})
 	
-	houseTemp = display.newText(currentTemps[1][2], display.contentCenterX, cso.y-70, native.systemFone, 30)
+	logicTimer(logic.time)
+	levelTimer(logic.time)
+	endCheck()
+	
+	levelTime = display.newText(logic.time, display.contentCenterX, 100, native.systemFont, 30)
+	
+
+	print("rating: "..rating())
 		
 end
 level.init = init
+
+function levelTimer(count)
+	ms = 100
+    t = timer.performWithDelay(ms, function () updateTempText() end, count*1000/ms)
+    if logic.isEnd then
+        timer.cancel(t)
+    end
+end
+
+function updateTempText()
+	display.remove(tempText)
+	tempText = display.newText(logic.getCurrentTempOf("h1"), display.contentCenterX, cso.y-70, native.systemFone, 30)
+end
 
 local function hide()
 	if initialized then

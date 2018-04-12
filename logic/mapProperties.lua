@@ -19,7 +19,7 @@ maps =
         },
         houses = {
             h1 = {
-                goal = 50 --goal temperature
+                goal = 70 --goal temperature
             }
         }
     },
