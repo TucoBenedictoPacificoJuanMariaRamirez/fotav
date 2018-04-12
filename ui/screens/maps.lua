@@ -104,7 +104,7 @@ local function init()
 		level8Btn.isVisible = true
 		level9Btn.isVisible = true
 		level10Btn.isVisible = true
-		level11Btn.isVisible = true
+		--[[level11Btn.isVisible = true
 		level12Btn.isVisible = true
 		level13Btn.isVisible = true
 		level14Btn.isVisible = true
@@ -116,7 +116,7 @@ local function init()
 		level20Btn.isVisible = true
 		level21Btn.isVisible = true
 		level22Btn.isVisible = true
-		level23Btn.isVisible = true
+		level23Btn.isVisible = true]]
 		mainMenuBtn.isVisible = true
 		zoomInBtn.isVisible = true
 		zoomOutBtn.isVisible = true
@@ -129,7 +129,7 @@ local function init()
 			x = 80,
 			y = 256-45,
 			onEvent = handleLevelSelect,
-			fillColor = { default={1,0,0,alpha} },
+			fillColor = { default={1,0,0,alpha} , over={1,0,0,alpha} },
 			--start to left upper side clockwise 
 			vertices = { -4,-12, 7,-11, 8,12, -2,12, -8,0 },
 			shape = "polygon"
@@ -142,7 +142,7 @@ local function init()
 			x = 45,
 			y = 209-45,
 			onEvent = handleLevelSelect,
-			fillColor = { default={1,0,0,alpha} },
+			fillColor = { default={0,0,1,alpha} , over={0,0,1,alpha}},
 			--start to left upper side clockwise 
 			vertices = { -37,-33, -5,-33, 21,8, 35,8, 37,33, 20,33, 1,24, -34,27 },
 			shape = "polygon",
@@ -155,7 +155,7 @@ local function init()
 			x = 65,
 			y = 175-45,
 			onEvent = handleLevelSelect,
-			fillColor = { default={1,0,0,alpha} },
+			fillColor = { default={1,0,0,alpha} , over={1,0,0,alpha}},
 			--start to left upper side clockwise 
 			vertices = { -33,-30, 5,-33, -5,-58, 30,-58, 30,-20, 23,25, 0,25 },
 			shape = "polygon",
@@ -168,7 +168,7 @@ local function init()
 			x = 134,
 			y = 174-45,
 			onEvent = handleLevelSelect,
-			fillColor = { default={1,0,0,alpha} },
+			fillColor = { default={1,0,0,alpha} , over={1,0,0,alpha}},
 			--start to left upper side clockwise 
 			vertices = { -10,-35, 18,-35, 19,-7, 6,36, -18,27 },
 			shape = "polygon",
@@ -181,7 +181,7 @@ local function init()
 			x = 111.5,
 			y = 276-45,
 			onEvent = handleLevelSelect,
-			fillColor = { default={1,0,0,alpha} },
+			fillColor = { default={1,0,0,alpha} , over={1,0,0,alpha}},
 			--start to left upper side clockwise 
 			vertices = { -8,-14, 2,-14, 7,2, 8,14, -3,10 },
 			shape = "polygon",
@@ -194,7 +194,7 @@ local function init()
 			x = 125,
 			y = 262-45,
 			onEvent = handleLevelSelect,
-			fillColor = { default={1,0,0,alpha} },
+			fillColor = { default={0,0,1,alpha} , over={0,0,1,alpha}},
 			--start to left upper side clockwise 
 			vertices = { 3,-14, 12,-8, -1,13, -7,-2 },
 			shape = "polygon",
@@ -207,7 +207,7 @@ local function init()
 			x = 133,
 			y = 270-45,
 			onEvent = handleLevelSelect,
-			fillColor = { default={1,0,0,alpha} },
+			fillColor = { default={1,0,0,alpha} , over={1,0,0,alpha}},
 			--start to left upper side clockwise 
 			vertices = { 2,-14, 12,-4, -7,9, -12,5 },
 			shape = "polygon",
@@ -220,12 +220,39 @@ local function init()
 			x = 144,
 			y = 285-45,
 			onEvent = handleLevelSelect,
-			fillColor = { default={1,0,0,0.3} },
+			fillColor = { default={1,0,0,0.3} , over={1,0,0,alpha}},
 			--start to left upper side clockwise 
-			vertices = { -16,-4, -3,-14, 16,-14, 16,3, 10,14, -16,4 },
+			vertices = { -16,-4, -3,-14, 16,-14, 16,-1, 10,14, -16,4 },
 			shape = "polygon",
 			})
 		group:insert(level8Btn)
+
+		level9Btn = widget.newButton(
+			{
+			id = "9",
+			x = 143,
+			y = 312-45,
+			onEvent = handleLevelSelect,
+			fillColor = { default={0,0,1,alpha} , over={1,0,0,alpha}},
+			--start to left upper side clockwise 
+			vertices = { -24,-22, 23,-5, -3,29, -28,-16},
+			shape = "polygon",
+			})
+		group:insert(level9Btn)
+
+		level10Btn = widget.newButton(
+			{
+			id = "10",
+			x = 196,
+			y = 279-45,
+			onEvent = handleLevelSelect,
+			fillColor = { default={0,0,1,0.3} , over={1,0,0,alpha}},
+			--start to left upper side clockwise 
+			vertices = { -33,-12, 0,-25, 37,-16, 24,20, 15,25, -15,20, -37,12 },
+			shape = "polygon",
+			})
+		group:insert(level10Btn)
+
 
 		--[[level5Btn = widget.newButton(
 			{
@@ -241,7 +268,7 @@ local function init()
 		group:insert(level5Btn)]]
 	
 			
-		--[[mainMenuBtn = widget.newButton(
+		mainMenuBtn = widget.newButton(
 			{
 			label = "MAIN MENU",
 			x = display.contentCenterX,
@@ -251,7 +278,7 @@ local function init()
 			onEvent = handleBackToMainMenu,
 			fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
 			shape = "roundedRect"
-			})]]
+			})
 
 		-- initialize zoom buttons
 		zoomInBtn = widget.newButton(
@@ -353,7 +380,7 @@ local function hide()
 		level8Btn.isVisible = false
 		level9Btn.isVisible = false
 		level10Btn.isVisible = false
-		level11Btn.isVisible = false
+		--[[level11Btn.isVisible = false
 		level12Btn.isVisible = false
 		level13Btn.isVisible = false
 		level14Btn.isVisible = false
@@ -365,7 +392,7 @@ local function hide()
 		level20Btn.isVisible = false
 		level21Btn.isVisible = false
 		level22Btn.isVisible = false
-		level23Btn.isVisible = false
+		level23Btn.isVisible = false]]
 		mainMenuBtn.isVisible = false
 		zoomInBtn.isVisible = false
 		zoomOutBtn.isVisible = false
