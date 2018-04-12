@@ -33,7 +33,7 @@ local function init()
 		y = display.contentCenterY + 200,
 		width = 150,
 		height = 35,
-		onPress = logic.pipeTap,
+		onEvent = logic.pipeTap,
 		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
 		shape = "roundedRect"
 		})
@@ -42,7 +42,7 @@ local function init()
 	levelTimer(logic.time)
 	endCheck()
 	
-	levelTime = display.newText(logic.time, display.contentCenterX, 100, native.systemFont, 30)
+	
 	
 
 	print("rating: "..rating())
@@ -51,16 +51,19 @@ end
 level.init = init
 
 function levelTimer(count)
-	ms = 100
-    t = timer.performWithDelay(ms, function () updateTempText() end, count*1000/ms)
+	ms = 10
+    t = timer.performWithDelay(ms, function () updateText() end, count*1000/ms)
     if logic.isEnd then
         timer.cancel(t)
     end
 end
 
-function updateTempText()
+function updateText()
 	display.remove(tempText)
 	tempText = display.newText(logic.getCurrentTempOf("h1"), display.contentCenterX, cso.y-70, native.systemFone, 30)
+	
+	display.remove(levelTime)
+	levelTime = display.newText(logic.time, display.contentCenterX, 100, native.systemFont, 30)
 end
 
 local function hide()
