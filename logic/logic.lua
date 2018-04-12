@@ -4,13 +4,6 @@
 require("logic.mapProperties")
 require("math")
 
---[[
-    TODO:
-        - timer for decrementing house temps with modifyHouseTemp()
-        - level timer function
-        - endgame condition in level timer
---]]
-
 local logic = {}
 
 level = nil
@@ -57,7 +50,7 @@ end
 function pipeTap(event)
     if not tapCooldownFlag then
         print("tapped")
-        --tapCooldownFlag = true
+        tapCooldownFlag = true
         pipeName = "p" .. event.target.id
         cnt = tableLength(logic.pipes[pipeName].houses)
         for i=1, cnt do
@@ -153,23 +146,39 @@ function cooling(temp)
 end
 
 function logicTimer(count)
-    t = timer.performWithDelay(1000
-            , function() 
-                count = count - 1
-                cooling(level.decrease)
-                --tapCooldownFlag=false
+    print(count)
+    ms = 100
+    t = timer.performWithDelay(ms
+            , function()                 
+                count = count - 1/ms
+                print(count)
+                setFlag(count)
+                lastCheck()
               end
-            , count
+            , count*1000/ms
         )
+    
     if isEnd then
         timer.cancel(t)
     end
 end
 logic.logicTimer = logicTimer
 
+function setFlag(count)
+    cooling(level.decrease)
+    tapCooldownFlag=false
+end
+
+function lastCheck()
+    if count<=0 then
+        tapCooldownFlag=true
+    end
+end
+
 function endCheck()
     t = timer.performWithDelay(200
             , function()
+                print("endCheck")
                 if rating()==3 then
                     print("              vege")
                     isEnd = true
