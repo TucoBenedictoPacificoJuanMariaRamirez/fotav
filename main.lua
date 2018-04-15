@@ -3,7 +3,7 @@
 
 -- This file is the entry point of the whole app
 
-local background = display.newImageRect( "assets/background.png", 360, 570 )
+local background = display.newImageRect( "assets/start_screen/background_blue.png", display.actualContentWidth, display.actualContentHeight )
 background.x = display.contentCenterX
 background.y = display.contentCenterY
 
