@@ -41,6 +41,8 @@ end
 mainMenu.init = init
 
 local function hide()
+	-- Not calling remove causes memory leak
+	-- TODO: call only on app exit, and set isVisible instead
 	display.remove(staticImages)
 	if initialized then
 		toMapsBtn.isVisible = false
@@ -56,6 +58,7 @@ function initGroup()
 end
 
 function loadImage(file, scale, x, y)
+	-- Load img temporarily using deprecated function to get the dimensions
 	local temp = display.newImage(file)
 	local sizeX, sizeY = temp.width, temp.height
 	display.remove(temp)
