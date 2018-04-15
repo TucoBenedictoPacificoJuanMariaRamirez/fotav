@@ -1,47 +1,68 @@
--- Modified by Nagy Bence
--- 2018.03.15
-
 -- This file contains the UI element objects for the main Menu
 
 local mainMenu = {}
 local initialized = false
 
-local mainText = nil
+local staticImages = nil
 local toMapsBtn = nil
 
 local function handleEvent(event)
-	if ("ended" == event.phase) then
-        screenController.mapsScreen()
-    end
+  screenController.mapsScreen()
 end
 
 local function init()
-	mainText = display.newText("MAIN SCREEN", display.contentCenterX, display.contentCenterY, native.systemFont, 30)
-	mainText:setFillColor(128, 23, 170)
+	staticImages = initGroup()
+	staticImages:insert(loadImage("assets/start_screen/tap.png", 0.04, 0, 35))
+	staticImages:insert(loadImage("assets/start_screen/road.png", 0.071, 0, -220))
+	staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.025, -80, -60))
+	staticImages:insert(loadImage("assets/start_screen/building_green.png", 0.025, -20, -70))
+	staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.02, 100, -70))
+	staticImages:insert(loadImage("assets/start_screen/building_purple.png", 0.02, 40, -60))
+	staticImages:insert(loadImage("assets/start_screen/building_yellow.png", 0.02, -140, -100))
+	staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.02, -90, -120))
+	staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.025, 20, -110))
+	staticImages:insert(loadImage("assets/start_screen/building_darkgreen.png", 0.020, 130, -100))
 
 	if initialized then
 		toMapsBtn.isVisible = true
 	else
-		toMapsBtn = widget.newButton(
-			{
-			label = "MAPS",
+		toMapsBtn = widget.newButton({
+			width = display.actualContentWidth,
+			height = display.actualContentHeight,
 			x = display.contentCenterX,
-			y = display.contentCenterY + 60,
-			onEvent = handleEvent,
-			fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
-			shape = "roundedRect"
-			})
+			y = display.contentCenterY,
+			onRelease = handleEvent,
+			fillColor = { default={1,1,1,0.01}, over={0,0,0,0} },
+			shape = "rect",
+		})
 		initialized = true
 	end
 end
 mainMenu.init = init
 
 local function hide()
+	display.remove(staticImages)
 	if initialized then
-		display.remove(mainText)
 		toMapsBtn.isVisible = false
 	end
 end
 mainMenu.hide = hide
+
+function initGroup()
+	local g = display.newGroup()
+	g.x = display.contentCenterX
+	g.y = display.contentCenterY
+	return g
+end
+
+function loadImage(file, scale, x, y)
+	local temp = display.newImage(file)
+	local sizeX, sizeY = temp.width, temp.height
+	display.remove(temp)
+	local img = display.newImageRect(file, sizeX * scale, sizeY * scale)
+	img.x = x
+	img.y = -y
+	return img
+end
 
 return mainMenu
