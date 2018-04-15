@@ -23,7 +23,7 @@ end
 
 local function init()
 	logic.createLevel(1)
-	bg = display.newImageRect("assets/background.png", 360, 570)
+	bg = display.newImageRect("assets/background.png", 320, 570)
 	
 	
 	cso = widget.newButton(
