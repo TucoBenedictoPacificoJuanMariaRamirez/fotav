@@ -17,7 +17,7 @@ loadingText:setFillColor(255, 255, 255)
 display.remove(loadingText)
 -- Pass control to the screenController file
 screenController = require("controller.screenController")
---screenController.mapScreen()
+--screenController.mapsScreen()
 screenController.mainScreen()
 
 
