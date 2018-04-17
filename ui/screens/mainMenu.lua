@@ -3,6 +3,7 @@
 local mainMenu = {}
 local initialized = false
 
+local everything = nil
 local staticImages = nil
 local cloudsClose, cloudsMiddle, cloudsFar = nil
 local animationTimer = nil
@@ -13,32 +14,9 @@ local function handleEvent(event)
 end
 
 local function init()
-  staticImages = initGroup()
-  cloudsClose = {initGroup(), initGroup()}
-  cloudsMiddle = {initGroup(), initGroup()}
-  cloudsFar = {initGroup(), initGroup()}
-  do -- load static images
-  	staticImages:insert(loadImage("assets/start_screen/tap.png", 0.04, 0, 35))
-  	staticImages:insert(loadImage("assets/start_screen/road.png", 0.071, 0, -220))
-  	staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.025, -80, -60))
-  	staticImages:insert(loadImage("assets/start_screen/building_green.png", 0.025, -20, -70))
-  	staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.02, 100, -70))
-  	staticImages:insert(loadImage("assets/start_screen/building_purple.png", 0.02, 40, -60))
-  	staticImages:insert(loadImage("assets/start_screen/building_yellow.png", 0.02, -140, -100))
-  	staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.02, -90, -120))
-  	staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.025, 20, -110))
-    staticImages:insert(loadImage("assets/start_screen/building_darkgreen.png", 0.020, 130, -100))
-    staticImages:insert(loadImage("assets/start_screen/sun.png", 0.015, 100, 220))
-  end
-  do -- load clouds
-    fillWithCloseClouds(cloudsClose)
-    fillWithMiddleClouds(cloudsMiddle)
-    fillWithFarClouds(cloudsFar)
-  end
-  animationTimer = timer.performWithDelay(1000 / 60, animateClouds, 0)
-
 	if initialized then
 		toMapsBtn.isVisible = true
+    everything.isVisible = true
 	else
 		toMapsBtn = widget.newButton({
 			width = display.actualContentWidth,
@@ -49,9 +27,34 @@ local function init()
 			fillColor = { default={1,1,1,0.01}, over={0,0,0,0} },
 			shape = "rect",
 		})
+    do -- initialize groups
+      everything = initGroup(false)
+      staticImages = initGroup(true)
+      cloudsClose = {initGroup(true), initGroup(true)}
+      cloudsMiddle = {initGroup(true), initGroup(true)}
+      cloudsFar = {initGroup(true), initGroup(true)}
+    end
+    do -- load static images
+      staticImages:insert(loadImage("assets/start_screen/tap.png", 0.04, 0, 35))
+      staticImages:insert(loadImage("assets/start_screen/road.png", 0.071, 0, -220))
+      staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.025, -80, -60))
+      staticImages:insert(loadImage("assets/start_screen/building_green.png", 0.025, -20, -70))
+      staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.02, 100, -70))
+      staticImages:insert(loadImage("assets/start_screen/building_purple.png", 0.02, 40, -60))
+      staticImages:insert(loadImage("assets/start_screen/building_yellow.png", 0.02, -140, -100))
+      staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.02, -90, -120))
+      staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.025, 20, -110))
+      staticImages:insert(loadImage("assets/start_screen/building_darkgreen.png", 0.020, 130, -100))
+      staticImages:insert(loadImage("assets/start_screen/sun.png", 0.015, 100, 220))
+    end
+    do -- load clouds
+      fillWithCloseClouds(cloudsClose)
+      fillWithMiddleClouds(cloudsMiddle)
+      fillWithFarClouds(cloudsFar)
+    end
 		initialized = true
 	end
-
+  animationTimer = timer.performWithDelay(1000 / 60, animateClouds, 0)
 	fancy_log("Main Menu loaded")
 end
 mainMenu.init = init
@@ -71,17 +74,10 @@ function animateClouds()
 end
 
 local function hide()
-	-- Not calling remove causes memory leak
-	-- TODO: call only on app exit, and set isVisible instead
+	-- TODO: Not calling remove on group causes memory leak (?)
 	if initialized then
     timer.cancel(animationTimer)
-    display.remove(staticImages)
-    display.remove(cloudsClose[1])
-    display.remove(cloudsClose[2])
-    display.remove(cloudsMiddle[1])
-    display.remove(cloudsMiddle[2])
-    display.remove(cloudsFar[1])
-    display.remove(cloudsFar[2])
+    everything.isVisible = false
 		toMapsBtn.isVisible = false
 	end
 end
@@ -109,10 +105,13 @@ function fillWithFarClouds(group)
   group[2].x = group[2].x - display.actualContentWidth
 end
 
-function initGroup()
+function initGroup(isChild)
 	local g = display.newGroup()
-	g.x = display.contentCenterX
-	g.y = display.contentCenterY
+  if isChild then
+  	g.x = display.contentCenterX
+  	g.y = display.contentCenterY
+    everything:insert(g)
+  end
 	return g
 end
 
