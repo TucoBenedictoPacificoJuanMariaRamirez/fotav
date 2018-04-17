@@ -67,6 +67,7 @@ function updateText()
 end
 
 local function hide()
+	-- This might not be good use on this screen, since we want to reinit it (I guess)
 	if initialized then
 		display.remove(text)
 		mapsBtn.isVisible = false
