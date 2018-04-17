@@ -73,15 +73,15 @@ end
 local function hide()
 	-- Not calling remove causes memory leak
 	-- TODO: call only on app exit, and set isVisible instead
-  timer.cancel(animationTimer)
-  display.remove(staticImages)
-  display.remove(cloudsClose[1])
-  display.remove(cloudsClose[2])
-  display.remove(cloudsMiddle[1])
-  display.remove(cloudsMiddle[2])
-  display.remove(cloudsFar[1])
-	display.remove(cloudsFar[2])
 	if initialized then
+    timer.cancel(animationTimer)
+    display.remove(staticImages)
+    display.remove(cloudsClose[1])
+    display.remove(cloudsClose[2])
+    display.remove(cloudsMiddle[1])
+    display.remove(cloudsMiddle[2])
+    display.remove(cloudsFar[1])
+    display.remove(cloudsFar[2])
 		toMapsBtn.isVisible = false
 	end
 end

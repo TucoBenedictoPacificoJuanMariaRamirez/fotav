@@ -29,4 +29,4 @@ screenController = require("controller.screenController")
 screenController.mainScreen()
 
 
-require "tests.testsmain"
+-- require "tests.testsmain"
