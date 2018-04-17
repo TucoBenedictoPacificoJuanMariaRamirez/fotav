@@ -25,6 +25,11 @@ function createLevel(levelNum)
     print("----------------------------------------------")
     print ("Creating level " .. levelNum .. "...")
     level = maps['l' .. levelNum]
+	-- If the map cannot be loaded, this function returns -1
+	if level == nil then
+		return -1
+	end
+
     logic.limit = level.limit
     logic.decrease = level.decrease
     logic.time = level.time
@@ -35,7 +40,7 @@ function createLevel(levelNum)
     setCurrentTempOf("h1",30)
 
     --endCheck()
-
+	return 0
 end
 logic.createLevel = createLevel
 

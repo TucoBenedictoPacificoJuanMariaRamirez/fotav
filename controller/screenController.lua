@@ -41,8 +41,11 @@ screenController.mapsScreen = mapsScreen
 
 local function levelScreen(level)
 	mapsScreenUI.hide()
-	currentLevel = levels[tonumber(level)]
-	levels[tonumber(level)].init()
+	--currentLevel = levels[tonumber(level)]
+	--levels[tonumber(level)].init()
+	-- TODO: require(level)
+	currentLevel = require("ui.screens.level")
+	currentLevel.init(tonumber(level))
 end
 screenController.levelScreen = levelScreen
 
