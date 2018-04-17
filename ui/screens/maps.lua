@@ -77,6 +77,7 @@ local mapsText = nil
 local mainMenuBtn = nil
 local zoomInBtn = nil
 local zoomOutBtn = nil
+local initialized = false
 
 local BcGrWidht = display.contentWidth
 local BcGrHeight = display.contentHeight
@@ -84,11 +85,8 @@ local BcGrHeight = display.contentHeight
 -- The all item's group
 group = display.newGroup()
 
-
 group.xScale = 1.5 
 group.yScale = 1.5
-
-
 
 function zoomIn()
     if(group.xScale < 4 ) then
@@ -153,6 +151,7 @@ local function init()
 		mainMenuBtn.isVisible = true
 		zoomInBtn.isVisible = true
 		zoomOutBtn.isVisible = true
+		initialized = true
 end
 maps.init = init
 
@@ -183,11 +182,13 @@ group:addEventListener( "touch", dragScreen )
 local function hide()
 	if initialized then
 		display.remove(mapsText)
-		level1Btn.isVisible = false
-		
+		--level1Btn.isVisible = false
+
 		mainMenuBtn.isVisible = false
 		zoomInBtn.isVisible = false
 		zoomOutBtn.isVisible = false
+		
+		display.remove(group)
 	end
 end
 maps.hide = hide

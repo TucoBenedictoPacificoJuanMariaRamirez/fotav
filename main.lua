@@ -3,6 +3,14 @@
 
 -- This file is the entry point of the whole app
 
+function fancy_log(message)
+	if message == nil then
+		print("----------------------\n\tCannot log nil value, watch out!\t\n----------------------")
+	else
+		print("----------------------\n\t" .. message .. "\t\n----------------------")
+	end
+end
+
 local background = display.newImageRect( "assets/start_screen/background_blue.png", display.actualContentWidth, display.actualContentHeight )
 background.x = display.contentCenterX
 background.y = display.contentCenterY

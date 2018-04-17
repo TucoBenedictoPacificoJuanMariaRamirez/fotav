@@ -24,7 +24,7 @@ local function mainScreen()
 	mapsScreenUI.hide()
 	-- This loads all the objects in the mainMenu.lua
 	mainMenuUI.init()
-	-- code
+	
 end
 screenController.mainScreen = mainScreen
 
@@ -35,7 +35,7 @@ local function mapsScreen()
 	end
 	-- This loads all the objects in the maps.lua
 	mapsScreenUI.init()
-	-- code
+	
 end
 screenController.mapsScreen = mapsScreen
 
@@ -43,9 +43,9 @@ local function levelScreen(level)
 	mapsScreenUI.hide()
 	--currentLevel = levels[tonumber(level)]
 	--levels[tonumber(level)].init()
-	-- TODO: require(level)
 	currentLevel = require("ui.screens.level")
 	currentLevel.init(tonumber(level))
+	fancy_log("Changed screen to " .. level)
 end
 screenController.levelScreen = levelScreen
 

@@ -43,7 +43,7 @@ local function init(which)
 	logicTimer(logic.time)
 	levelTimer(logic.time)
 	endCheck()
-	
+	initialized = true
 
 	print("rating: "..rating())
 		

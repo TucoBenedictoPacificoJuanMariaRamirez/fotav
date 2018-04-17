@@ -51,6 +51,8 @@ local function init()
 		})
 		initialized = true
 	end
+
+	fancy_log("Main Menu loaded")
 end
 mainMenu.init = init
 
