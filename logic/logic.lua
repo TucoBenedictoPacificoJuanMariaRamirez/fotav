@@ -30,7 +30,7 @@ function createLevel(levelNum)
     logic.time = level.time
     logic.pipes = level.pipes
     logic.houses = level.houses
-    
+
     initCurrentTemps()
     setCurrentTempOf("h1",30)
 
@@ -70,7 +70,7 @@ function modifyTempOnTap(house, pipe)
 end
 
 --called when no time left (lvl endscreen)
-function rating()   
+function rating()
     local optimal = 0
 
     for key, value in pairs(currentTemps) do
@@ -93,7 +93,7 @@ function rating()
     -- *: at least the third of the houseTemps are optimal
     elseif optimal > math.ceil(count/3) then
         return 1
-    -- 0: 
+    -- 0:
     else
         return 0
     end
@@ -104,9 +104,9 @@ logic.rating = rating
 --returns whether the current houseTemp is acceptable
 function isWithinError(house)
     -- | goal-current | < limit  <===>  current > goal-limit  and  current < goal+limit
-    
+
     c = getCurrentTempOf(tostring(house))
-    
+
     local g = tonumber(logic.houses[house].goal)
     local l = tonumber(logic.limit)
 
@@ -149,7 +149,7 @@ function logicTimer(count)
     print(count)
     ms = 100
     t = timer.performWithDelay(ms
-            , function()                 
+            , function()
                 count = count - 1/ms
                 print(count)
                 setFlag(count)
@@ -157,7 +157,7 @@ function logicTimer(count)
               end
             , count*1000/ms
         )
-    
+
     if isEnd then
         timer.cancel(t)
     end
