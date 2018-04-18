@@ -20,22 +20,26 @@ for i = 1, 4 do
 	levels[i] = require("ui.levels.level" .. tostring(i))
 end
 
-local function mainScreen()
-	mapsScreenUI.hide()
-	-- This loads all the objects in the mainMenu.lua
+local function initialize()
 	mainMenuUI.init()
-	
+	mainMenuUI.hide()
+	mapsScreenUI.init()
+	mapsScreenUI.hide()
+end
+screenController.initialize = initialize
+
+local function mainScreen()
+	mapsScreenUI.transition(false)
+	mainMenuUI.transition(true)
 end
 screenController.mainScreen = mainScreen
 
 local function mapsScreen()
-	mainMenuUI.hide()
+	mainMenuUI.transition(false)
 	if currentLevel ~= nil then
 		currentLevel.hide()
 	end
-	-- This loads all the objects in the maps.lua
-	mapsScreenUI.init()
-	
+	mapsScreenUI.transition(true)
 end
 screenController.mapsScreen = mapsScreen
 
@@ -43,7 +47,7 @@ local function levelScreen(level)
 	mapsScreenUI.hide()
 	--currentLevel = levels[tonumber(level)]
 	--levels[tonumber(level)].init()
-	
+
 	-- Extract number from level parameter
 	level = string.match(level, "%d+")
 	currentLevel = require("ui.screens.level")

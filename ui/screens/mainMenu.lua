@@ -59,6 +59,41 @@ local function init()
 end
 mainMenu.init = init
 
+local function hide()
+	-- TODO: Not calling remove on group causes memory leak (?)
+	if initialized then
+    timer.cancel(animationTimer)
+    everything.isVisible = false
+		toMapsBtn.isVisible = false
+	end
+end
+mainMenu.hide = hide
+
+local function transition(isGoingToBeCurrent)
+  if isGoingToBeCurrent then
+    init()
+    everything.y = display.actualContentHeight
+  else
+    everything.y = 0
+  end
+  transitionTimer = timer.performWithDelay(1000 / 60,
+    function()
+      if isGoingToBeCurrent then
+        everything.y = everything.y - 3
+        if everything.y <= 0 then
+          timer.cancel(transitionTimer)
+        end
+      else
+        everything.y = everything.y + 3
+        if everything.y >= display.actualContentHeight then
+          hide()
+          timer.cancel(transitionTimer)
+        end
+      end
+    end, 0)
+end
+mainMenu.transition = transition
+
 function animateClouds()
   local function move(chunk, speed)
     for k,v in pairs(chunk) do
@@ -72,16 +107,6 @@ function animateClouds()
   move(cloudsMiddle, 0.6)
   move(cloudsFar, 0.3)
 end
-
-local function hide()
-	-- TODO: Not calling remove on group causes memory leak (?)
-	if initialized then
-    timer.cancel(animationTimer)
-    everything.isVisible = false
-		toMapsBtn.isVisible = false
-	end
-end
-mainMenu.hide = hide
 
 function fillWithCloseClouds(group)
   group[1]:insert(loadImage("assets/start_screen/cloud_01.png", 0.03, 80, 170))

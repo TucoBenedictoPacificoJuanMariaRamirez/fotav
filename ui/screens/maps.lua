@@ -63,7 +63,7 @@ local function dragScreen( event )
     elseif ( "ended" == phase or "cancelled" == phase ) then
         -- Release touch focus on the screen
         display.currentStage:setFocus( nil )
-		
+
 		-- SHOULD ONLY TRIGGER IF USER DID NOT DRAGGED TOO MUCH
 		handleLevelSelect(event)
     end
@@ -82,7 +82,7 @@ function createButton(p_id, p_x, p_y, p_vertices)
 			shape = "polygon"
 		}
 	)
-	
+
 	-- the dragScreen handles both the drag and the tap on buttons
 	btn:addEventListener("touch", dragScreen)
 	return btn
@@ -93,7 +93,7 @@ function initDistrictButtons(initialized)
 	if initialized then
 		group.isVisible = true
 	else
-		for i=1, 23 do		
+		for i=1, 23 do
 			btn = createButton("levelbtn" .. tostring(i), allVertices[i][1], allVertices[i][2], allVertices[i][3])
 			btn.isVisible = true
 			table.insert(districtButtons, {i, btn})
@@ -120,7 +120,7 @@ local BcGrHeight = display.contentHeight
 
 function zoomIn()
     if(group.xScale < 4 ) then
-		group.xScale = group.xScale + 0.5  
+		group.xScale = group.xScale + 0.5
 		group.yScale = group.yScale + 0.5
 		BcGrWidht = display.contentWidth * group.xScale
 		BcGrHeight = display.contentHeight * group.yScale
@@ -128,7 +128,7 @@ function zoomIn()
 end
 function zoomOut()
 	if(group.xScale > 1) then
-   		group.xScale = group.xScale - 0.5  
+   		group.xScale = group.xScale - 0.5
 		group.yScale = group.yScale - 0.5
 		BcGrWidht = display.contentWidth * group.xScale
 		BcGrHeight = display.contentHeight * group.yScale
@@ -141,13 +141,13 @@ local function init()
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 	group:insert(background)
-	
+
 	initDistrictButtons(initialized)
 	if initialized then
 		--mainMenuBtn.isVisible = true
 		zoomInBtn.isVisible = true
 		zoomOutBtn.isVisible = true
-	else	
+	else
 		 --[[mainMenuBtn = widget.newButton()
 			{
 				label = "MAIN MENU",
@@ -182,7 +182,7 @@ local function init()
 				fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
 				shape = "roundedRect",
 			})
-		
+
 		initialized = true
 	end
 	fancy_log("Maps loaded")
@@ -196,7 +196,7 @@ local function hide()
 		--mainMenuBtn.isVisible = false
 		zoomInBtn.isVisible = false
 		zoomOutBtn.isVisible = false
-		
+
 		-- This should NEVER be used (breaks the app)
 		--display.remove(group)
 		-- Instead use this:
@@ -204,5 +204,30 @@ local function hide()
 	end
 end
 maps.hide = hide
+
+local function transition(isGoingToBeCurrent)
+  if isGoingToBeCurrent then
+    init()
+    group.y = -display.actualContentHeight
+  else
+    group.y = 0
+  end
+  transitionTimer = timer.performWithDelay(1000 / 60,
+    function()
+      if isGoingToBeCurrent then
+        group.y = group.y + 3
+        if group.y >= 0 then
+          timer.cancel(transitionTimer)
+        end
+      else
+        group.y = group.y - 3
+        if group.y <= -display.actualContentHeight then
+          hide()
+          timer.cancel(transitionTimer)
+        end
+      end
+    end, 0)
+end
+maps.transition = transition
 
 return maps
