@@ -32,11 +32,42 @@ allVertices = {
 	{} --23
 }
 
+-- The all item's group
+group = display.newGroup()
+
+group.xScale = 1.5
+group.yScale = 1.5
+
 --Gives the control to the level
 local function handleLevelSelect(event)
-	if ("ended" == event.phase) then
+	if ("ended" == event.phase and event.target.id ~= nil and string.match(event.target.id, "levelbtn")) then
 		screenController.levelScreen(event.target.id)
     end
+end
+
+local function dragScreen( event )
+	local screen = group
+    local phase = event.phase
+    if ( "began" == phase ) then
+        -- Set touch focus on the screen
+        display.currentStage:setFocus( screen )
+        -- Store initial offset position
+        screen.touchOffsetX = event.x - screen.x
+        screen.touchOffsetY = event.y - screen.y
+
+	elseif ( "moved" == phase  ) then
+        -- Move the screen to the new touch position
+        screen.x = event.x - screen.touchOffsetX
+		screen.y = event.y - screen.touchOffsetY
+
+    elseif ( "ended" == phase or "cancelled" == phase ) then
+        -- Release touch focus on the screen
+        display.currentStage:setFocus( nil )
+		
+		-- SHOULD ONLY TRIGGER IF USER DID NOT DRAGGED TOO MUCH
+		handleLevelSelect(event)
+    end
+    return true
 end
 
 --Constructs a button
@@ -46,22 +77,28 @@ function createButton(p_id, p_x, p_y, p_vertices)
 			id = p_id,
 			x = p_x,
 			y = p_y,
-			onEvent = handleLevelSelect,
 			fillColor = { default={1,0,0,0.5} , over={1,0,0,0.5} },
 			vertices = p_vertices,
 			shape = "polygon"
 		}
 	)
+	
+	-- the dragScreen handles both the drag and the tap on buttons
+	btn:addEventListener("touch", dragScreen)
 	return btn
 end
 
 --Initializes and adds buttons to global districtButtons table
-function initDistrictButtons()
-	for i=1, 23 do		
-		btn = createButton(i, allVertices[i][1], allVertices[i][2], allVertices[i][3])
-		btn.isVisible = true
-		table.insert(districtButtons, {i, btn})
-		group:insert(btn)
+function initDistrictButtons(initialized)
+	if initialized then
+		group.isVisible = true
+	else
+		for i=1, 23 do		
+			btn = createButton("levelbtn" .. tostring(i), allVertices[i][1], allVertices[i][2], allVertices[i][3])
+			btn.isVisible = true
+			table.insert(districtButtons, {i, btn})
+			group:insert(btn)
+		end
 	end
 end
 
@@ -73,7 +110,6 @@ local function handleBackToMainMenu(event)
 end
 
 local maps={}
-local mapsText = nil
 local mainMenuBtn = nil
 local zoomInBtn = nil
 local zoomOutBtn = nil
@@ -81,12 +117,6 @@ local initialized = false
 
 local BcGrWidht = display.contentWidth
 local BcGrHeight = display.contentHeight
-
--- The all item's group
-group = display.newGroup()
-
-group.xScale = 1.5 
-group.yScale = 1.5
 
 function zoomIn()
     if(group.xScale < 4 ) then
@@ -112,83 +142,65 @@ local function init()
 	background.y = display.contentCenterY
 	group:insert(background)
 	
-	initDistrictButtons()		
-	 mainMenuBtn = widget.newButton()
-		--[[{
-			label = "MAIN MENU",
-			x = display.contentCenterX,
-			y = display.contentCenterY + 200,
-			width = 150,
-			height = 35,
-			onEvent = handleBackToMainMenu,
-			fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
-			shape = "roundedRect"
-		}) ]]
-
-	zoomInBtn = widget.newButton(
-			{
-			label = "+",
-			x = display.contentWidth-20,
-			y =  - 20,
-			width = 30,
-			height = 30,
-			onPress = zoomIn,
-			fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
-			shape = "roundedRect",
-			})
-	zoomOutBtn = widget.newButton(
-		{
-			label = "-",
-			x = display.contentWidth-20,
-			y =  15,
-			width = 30,
-			height = 30,
-			onPress = zoomOut,
-			fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
-			shape = "roundedRect",
-		})
-	
-		mainMenuBtn.isVisible = true
+	initDistrictButtons(initialized)
+	if initialized then
+		--mainMenuBtn.isVisible = true
 		zoomInBtn.isVisible = true
 		zoomOutBtn.isVisible = true
+	else	
+		 --[[mainMenuBtn = widget.newButton()
+			{
+				label = "MAIN MENU",
+				x = display.contentCenterX,
+				y = display.contentCenterY + 200,
+				width = 150,
+				height = 35,
+				onEvent = handleBackToMainMenu,
+				fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
+				shape = "roundedRect"
+			}) ]]
+
+		zoomInBtn = widget.newButton(
+				{
+				label = "+",
+				x = display.contentWidth-20,
+				y =  - 20,
+				width = 30,
+				height = 30,
+				onPress = zoomIn,
+				fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
+				shape = "roundedRect",
+				})
+		zoomOutBtn = widget.newButton(
+			{
+				label = "-",
+				x = display.contentWidth-20,
+				y =  15,
+				width = 30,
+				height = 30,
+				onPress = zoomOut,
+				fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
+				shape = "roundedRect",
+			})
+		
 		initialized = true
+	end
+	fancy_log("Maps loaded")
 end
 maps.init = init
-
-local function dragScreen( event )
-	local screen = event.target
-    local phase = event.phase
-    if ( "began" == phase ) then
-        -- Set touch focus on the screen
-        display.currentStage:setFocus( screen )
-        -- Store initial offset position
-        screen.touchOffsetX = event.x - screen.x
-        screen.touchOffsetY = event.y - screen.y
-
-	elseif ( "moved" == phase  ) then
-        -- Move the screen to the new touch position
-        screen.x = event.x - screen.touchOffsetX
-		screen.y = event.y - screen.touchOffsetY
-
-    elseif ( "ended" == phase or "cancelled" == phase ) then
-        -- Release touch focus on the screen
-        display.currentStage:setFocus( nil )
-    end
-    return true
-end
 
 group:addEventListener( "touch", dragScreen )
 
 local function hide()
 	if initialized then
-		display.remove(mapsText)
-		--level1Btn.isVisible = false
-
-		mainMenuBtn.isVisible = false
+		--mainMenuBtn.isVisible = false
 		zoomInBtn.isVisible = false
 		zoomOutBtn.isVisible = false
 		
-		display.remove(group)
+		-- This should NEVER be used (breaks the app)
+		--display.remove(group)
+		-- Instead use this:
+		group.isVisible = false
 	end
 end
 maps.hide = hide

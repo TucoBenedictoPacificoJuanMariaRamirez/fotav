@@ -43,6 +43,9 @@ local function levelScreen(level)
 	mapsScreenUI.hide()
 	--currentLevel = levels[tonumber(level)]
 	--levels[tonumber(level)].init()
+	
+	-- Extract number from level parameter
+	level = string.match(level, "%d+")
 	currentLevel = require("ui.screens.level")
 	currentLevel.init(tonumber(level))
 	fancy_log("Changed screen to " .. level)
