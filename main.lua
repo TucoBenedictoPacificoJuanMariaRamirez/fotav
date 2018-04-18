@@ -15,19 +15,18 @@ local background = display.newImageRect( "assets/start_screen/background_blue.pn
 background.x = display.contentCenterX
 background.y = display.contentCenterY
 
-local loadingText = display.newText("LOADING", display.contentCenterX, display.contentCenterY, native.systemFont, 30)
-loadingText:setFillColor(255, 255, 255)
+--local loadingText = display.newText("LOADING", display.contentCenterX, display.contentCenterY, native.systemFont, 30)
+--loadingText:setFillColor(255, 255, 255)
 
 -- This is probably unnecessary, later we'll see
 --local assetManager = require("controller.assetManager")
 --assetManager.loadAssets()
 
-display.remove(loadingText)
+--display.remove(loadingText)
 -- Pass control to the screenController file
 screenController = require("controller.screenController")
 screenController.initialize()
 --screenController.mapsScreen()
 screenController.mainScreen()
-
 
 -- require "tests.testsmain"

@@ -38,6 +38,7 @@ group = display.newGroup()
 group.xScale = 1.5
 group.yScale = 1.5
 
+
 --Gives the control to the level
 local function handleLevelSelect(event)
 	if ("ended" == event.phase and event.target.id ~= nil and string.match(event.target.id, "levelbtn")) then
@@ -110,7 +111,7 @@ local function handleBackToMainMenu(event)
 end
 
 local maps={}
-local mainMenuBtn = nil
+--local mainMenuBtn = nil
 local zoomInBtn = nil
 local zoomOutBtn = nil
 local initialized = false
@@ -140,14 +141,15 @@ local function init()
 	background = display.newImageRect( "assets/map/map_with_districts.png", 320, 570 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
-	group:insert(background)
 
 	initDistrictButtons(initialized)
 	if initialized then
 		--mainMenuBtn.isVisible = true
 		zoomInBtn.isVisible = true
 		zoomOutBtn.isVisible = true
+		
 	else
+		group:insert(background)
 		 --[[mainMenuBtn = widget.newButton()
 			{
 				label = "MAIN MENU",

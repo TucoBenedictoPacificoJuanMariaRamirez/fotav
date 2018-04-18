@@ -35,17 +35,17 @@ local function init()
       cloudsFar = {initGroup(true), initGroup(true)}
     end
     do -- load static images
-      staticImages:insert(loadImage("assets/start_screen/tap.png", 0.04, 0, 35))
-      staticImages:insert(loadImage("assets/start_screen/road.png", 0.071, 0, -220))
-      staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.025, -80, -60))
-      staticImages:insert(loadImage("assets/start_screen/building_green.png", 0.025, -20, -70))
-      staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.02, 100, -70))
-      staticImages:insert(loadImage("assets/start_screen/building_purple.png", 0.02, 40, -60))
-      staticImages:insert(loadImage("assets/start_screen/building_yellow.png", 0.02, -140, -100))
-      staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.02, -90, -120))
-      staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.025, 20, -110))
-      staticImages:insert(loadImage("assets/start_screen/building_darkgreen.png", 0.020, 130, -100))
-      staticImages:insert(loadImage("assets/start_screen/sun.png", 0.015, 100, 220))
+      staticImages:insert(loadImage("assets/start_screen/tap.png", 0.16, 0, 35))
+      staticImages:insert(loadImage("assets/start_screen/road.png", 0.284, 0, -220))
+      staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.1, -80, -60))
+      staticImages:insert(loadImage("assets/start_screen/building_green.png", 0.1, -20, -70))
+      staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.08, 100, -70))
+      staticImages:insert(loadImage("assets/start_screen/building_purple.png", 0.08, 40, -60))
+      staticImages:insert(loadImage("assets/start_screen/building_yellow.png", 0.08, -140, -100))
+      staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.08, -90, -120))
+      staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.1, 20, -110))
+      staticImages:insert(loadImage("assets/start_screen/building_darkgreen.png", 0.08, 130, -100))
+      staticImages:insert(loadImage("assets/start_screen/sun.png", 0.06, 100, 220))
     end
     do -- load clouds
       fillWithCloseClouds(cloudsClose)
@@ -109,24 +109,24 @@ function animateClouds()
 end
 
 function fillWithCloseClouds(group)
-  group[1]:insert(loadImage("assets/start_screen/cloud_01.png", 0.03, 80, 170))
-  group[1]:insert(loadImage("assets/start_screen/cloud_02.png", 0.03, -80, 200))
-  group[2]:insert(loadImage("assets/start_screen/cloud_01.png", 0.03, 80, 170))
-  group[2]:insert(loadImage("assets/start_screen/cloud_02.png", 0.03, -80, 200))
+  group[1]:insert(loadImage("assets/start_screen/cloud_01.png", 0.12, 80, 170))
+  group[1]:insert(loadImage("assets/start_screen/cloud_02.png", 0.12, -80, 200))
+  group[2]:insert(loadImage("assets/start_screen/cloud_01.png", 0.12, 80, 170))
+  group[2]:insert(loadImage("assets/start_screen/cloud_02.png", 0.12, -80, 200))
   group[2].x = group[2].x - display.actualContentWidth
 end
 
 function fillWithMiddleClouds(group)
-  group[1]:insert(loadImage("assets/start_screen/cloud_03.png", 0.02, -20, 120))
-  group[2]:insert(loadImage("assets/start_screen/cloud_03.png", 0.02, -20, 120))
+  group[1]:insert(loadImage("assets/start_screen/cloud_03.png", 0.08, -20, 120))
+  group[2]:insert(loadImage("assets/start_screen/cloud_03.png", 0.08, -20, 120))
   group[2].x = group[2].x - display.actualContentWidth
 end
 
 function fillWithFarClouds(group)
-  group[1]:insert(loadImage("assets/start_screen/cloud_04.png", 0.015, -100, 100))
-  group[1]:insert(loadImage("assets/start_screen/cloud_05.png", 0.015, 60, 80))
-  group[2]:insert(loadImage("assets/start_screen/cloud_04.png", 0.015, -100, 100))
-  group[2]:insert(loadImage("assets/start_screen/cloud_05.png", 0.015, 60, 80))
+  group[1]:insert(loadImage("assets/start_screen/cloud_04.png", 0.06, -100, 100))
+  group[1]:insert(loadImage("assets/start_screen/cloud_05.png", 0.06, 60, 80))
+  group[2]:insert(loadImage("assets/start_screen/cloud_04.png", 0.06, -100, 100))
+  group[2]:insert(loadImage("assets/start_screen/cloud_05.png", 0.06, 60, 80))
   group[2].x = group[2].x - display.actualContentWidth
 end
 
