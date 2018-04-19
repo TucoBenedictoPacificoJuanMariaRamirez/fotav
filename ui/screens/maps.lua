@@ -46,26 +46,37 @@ local function handleLevelSelect(event)
 end
 
 local function dragScreen( event )
+
 	local screen = group
     local phase = event.phase
-    if ( "began" == phase ) then
+	if ( "began" == phase ) then
+		openLevel = true	
         -- Set touch focus on the screen
         display.currentStage:setFocus( screen )
         -- Store initial offset position
         screen.touchOffsetX = event.x - screen.x
-        screen.touchOffsetY = event.y - screen.y
+		screen.touchOffsetY = event.y - screen.y
+		print("began")
+		print(openLevel)
 
 	elseif ( "moved" == phase  ) then
         -- Move the screen to the new touch position
         screen.x = event.x - screen.touchOffsetX
 		screen.y = event.y - screen.touchOffsetY
+		openLevel = false
+
+		print("moved")
+		print(openLevel)
 
     elseif ( "ended" == phase or "cancelled" == phase ) then
         -- Release touch focus on the screen
         display.currentStage:setFocus( nil )
-		
+		print("cancel")
 		-- SHOULD ONLY TRIGGER IF USER DID NOT DRAGGED TOO MUCH
-		handleLevelSelect(event)
+		if(openLevel) then
+			handleLevelSelect(event)
+		end
+		print(openLevel)
     end
     return true
 end
