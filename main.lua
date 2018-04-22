@@ -1,5 +1,5 @@
--- Modified by Nagy Bence
--- 2018.03.15
+
+local composer = require("composer")
 
 -- This file is the entry point of the whole app
 
@@ -22,11 +22,21 @@ background.y = display.contentCenterY
 --local assetManager = require("controller.assetManager")
 --assetManager.loadAssets()
 
+
 --display.remove(loadingText)
 -- Pass control to the screenController file
-screenController = require("controller.screenController")
-screenController.initialize()
+-- screenController = require("controller.screenController")
+-- screenController.initialize()
 --screenController.mapsScreen()
-screenController.mainScreen()
+-- screenController.mainScreen()
+-- local options = {
+--     effect = "fromTop",
+--     time = 500,
+--     params = {
+--         someKey = "someValue",
+--         someOtherKey = 10
+--     }
+-- }
+composer.gotoScene("ui.screens.mainMenu")
 
 -- require "tests.testsmain"
