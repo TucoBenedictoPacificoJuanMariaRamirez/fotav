@@ -11,9 +11,9 @@ function fancy_log(message)
 	end
 end
 
-local background = display.newImageRect( "assets/start_screen/background_blue.png", display.actualContentWidth, display.actualContentHeight )
-background.x = display.contentCenterX
-background.y = display.contentCenterY
+-- local background = display.newImageRect( "assets/start_screen/background_blue.png", display.actualContentWidth, display.actualContentHeight )
+-- background.x = display.contentCenterX
+-- background.y = display.contentCenterY
 
 --local loadingText = display.newText("LOADING", display.contentCenterX, display.contentCenterY, native.systemFont, 30)
 --loadingText:setFillColor(255, 255, 255)

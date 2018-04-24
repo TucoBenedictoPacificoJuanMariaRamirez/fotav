@@ -2,11 +2,16 @@
 -- This file contains the UI element objects for the maps screen
 
 
---Contains all the buttons over the districts
-districtButtons = {}
+local composer = require("composer")
+local scene = composer.newScene()
+local widget = require("widget")
 
+--local mainMenuBtn = nil
+
+--Contains all the buttons over the districts
+local districtButtons = {}
 --The data for making a button of a district:	{x, y, {vertices}}
-allVertices = {
+local allVertices = {
 	{80, 256-45, { -4,-12, 7,-11, 8,12, -2,12, -8,0 }}, --1
 	{45, 209-45, {-37,-33, -5,-33, 21,8, 35,8, 37,33, 20,33, 1,24, -34,27 }}, --2
 	{65, 175-45, {-33,-30, 5,-33, -5,-58, 30,-58, 30,-20, 23,25, 0,25 }}, --3
@@ -32,204 +37,192 @@ allVertices = {
 	{} --23
 }
 
--- The all item's group
-group = display.newGroup()
+local zoomInBtn = nil
+local zoomOutBtn = nil
 
-group.xScale = 1.5
-group.yScale = 1.5
+local BcGrWidht = display.contentWidth
+local BcGrHeight = display.contentHeight
 
 
---Gives the control to the level
-local function handleLevelSelect(event)
-	if ("ended" == event.phase and event.target.id ~= nil and string.match(event.target.id, "levelbtn")) then
-		screenController.levelScreen(event.target.id)
-    end
-end
+function scene:create(event)
+  local everything = self.view
+	everything.xScale = 1.5
+	everything.yScale = 1.5
 
-local function dragScreen( event )
-	local screen = group
-    local phase = event.phase
-    if ( "began" == phase ) then
-        -- Set touch focus on the screen
-        display.currentStage:setFocus( screen )
-        -- Store initial offset position
-        screen.touchOffsetX = event.x - screen.x
-        screen.touchOffsetY = event.y - screen.y
+	local background = display.newImageRect( "assets/map/map_with_districts.png", 320, 570 )
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
+	everything:insert(background)
 
-	elseif ( "moved" == phase  ) then
-        -- Move the screen to the new touch position
-        screen.x = event.x - screen.touchOffsetX
-		screen.y = event.y - screen.touchOffsetY
-
-    elseif ( "ended" == phase or "cancelled" == phase ) then
-        -- Release touch focus on the screen
-        display.currentStage:setFocus( nil )
-
-		-- SHOULD ONLY TRIGGER IF USER DID NOT DRAGGED TOO MUCH
-		handleLevelSelect(event)
-    end
-    return true
-end
-
---Constructs a button
-function createButton(p_id, p_x, p_y, p_vertices)
-	btn = widget.newButton(
-		{
+	--Gives the control to the level
+	function handleLevelSelect(event)
+		if ("ended" == event.phase and event.target.id ~= nil and string.match(event.target.id, "levelbtn")) then
+			--TODO: level select logic
+			--screenController.levelScreen(event.target.id)
+			print("TODO")
+		end
+	end
+	function dragScreen( event )
+		local screen = everything
+		local phase = event.phase
+		if ( "began" == phase ) then
+			-- Set touch focus on the screen
+			display.currentStage:setFocus( screen )
+			-- Store initial offset position
+			screen.touchOffsetX = event.x - screen.x
+			screen.touchOffsetY = event.y - screen.y
+		elseif ( "moved" == phase  ) then
+			-- Move the screen to the new touch position
+			screen.x = event.x - screen.touchOffsetX
+			screen.y = event.y - screen.touchOffsetY
+		elseif ( "ended" == phase or "cancelled" == phase ) then
+			-- Release touch focus on the screen
+			display.currentStage:setFocus( nil )
+			-- SHOULD ONLY TRIGGER IF USER DID NOT DRAG TOO MUCH
+			handleLevelSelect(event)
+		end
+		return true
+	end
+	--Constructs a button
+	function createButton(p_id, p_x, p_y, p_vertices)
+		btn = widget.newButton({
 			id = p_id,
 			x = p_x,
 			y = p_y,
 			fillColor = { default={1,0,0,0.5} , over={1,0,0,0.5} },
 			vertices = p_vertices,
 			shape = "polygon"
-		}
-	)
-
-	-- the dragScreen handles both the drag and the tap on buttons
-	btn:addEventListener("touch", dragScreen)
-	return btn
-end
-
---Initializes and adds buttons to global districtButtons table
-function initDistrictButtons(initialized)
-	if initialized then
-		group.isVisible = true
-	else
+		})
+		-- the dragScreen handles both the drag and the tap on buttons
+		btn:addEventListener("touch", dragScreen)
+		return btn
+	end
+	do --Initializes and adds buttons to global districtButtons table
 		for i=1, 23 do
 			btn = createButton("levelbtn" .. tostring(i), allVertices[i][1], allVertices[i][2], allVertices[i][3])
 			btn.isVisible = true
 			table.insert(districtButtons, {i, btn})
-			group:insert(btn)
+			everything:insert(btn)
 		end
 	end
-end
 
---Gives control to the main menu
-local function handleBackToMainMenu(event)
-	if ("ended" == event.phase) then
-		screenController.mainScreen()
-    end
-end
+	--[[mainMenuBtn = widget.newButton()
+		{
+		label = "MAIN MENU",
+		x = display.contentCenterX,
+		y = display.contentCenterY + 200,
+		width = 150,
+		height = 35,
+		onEvent = handleBackToMainMenu,
+		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
+		shape = "roundedRect"
+	}) ]]
 
-local maps={}
---local mainMenuBtn = nil
-local zoomInBtn = nil
-local zoomOutBtn = nil
-local initialized = false
-
-local BcGrWidht = display.contentWidth
-local BcGrHeight = display.contentHeight
-
-function zoomIn()
-    if(group.xScale < 4 ) then
-		group.xScale = group.xScale + 0.5
-		group.yScale = group.yScale + 0.5
-		BcGrWidht = display.contentWidth * group.xScale
-		BcGrHeight = display.contentHeight * group.yScale
+	function zoomIn()
+	    if(everything.xScale < 4 ) then
+			everything.xScale = everything.xScale + 0.5
+			everything.yScale = everything.yScale + 0.5
+			BcGrWidht = display.contentWidth * everything.xScale
+			BcGrHeight = display.contentHeight * everything.yScale
+		end
 	end
-end
-function zoomOut()
-	if(group.xScale > 1) then
-   		group.xScale = group.xScale - 0.5
-		group.yScale = group.yScale - 0.5
-		BcGrWidht = display.contentWidth * group.xScale
-		BcGrHeight = display.contentHeight * group.yScale
+	zoomInBtn = widget.newButton({
+		label = "+",
+		x = display.contentWidth-20,
+		y =  - 20,
+		width = 30,
+		height = 30,
+		onPress = zoomIn,
+		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
+		shape = "roundedRect",
+	})
+	function zoomOut()
+		if(everything.xScale > 1) then
+			everything.xScale = everything.xScale - 0.5
+			everything.yScale = everything.yScale - 0.5
+			BcGrWidht = display.contentWidth * everything.xScale
+			BcGrHeight = display.contentHeight * everything.yScale
+		end
 	end
-end
+	zoomOutBtn = widget.newButton(	{
+		label = "-",
+		x = display.contentWidth-20,
+		y =  15,
+		width = 30,
+		height = 30,
+		onPress = zoomOut,
+		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
+		shape = "roundedRect",
+	})
 
+	everything:addEventListener( "touch", dragScreen )
 
-local function init()
-	background = display.newImageRect( "assets/map/map_with_districts.png", 320, 570 )
-	background.x = display.contentCenterX
-	background.y = display.contentCenterY
-
-	initDistrictButtons(initialized)
-	if initialized then
-		--mainMenuBtn.isVisible = true
-		zoomInBtn.isVisible = true
-		zoomOutBtn.isVisible = true
-		
-	else
-		group:insert(background)
-		 --[[mainMenuBtn = widget.newButton()
-			{
-				label = "MAIN MENU",
-				x = display.contentCenterX,
-				y = display.contentCenterY + 200,
-				width = 150,
-				height = 35,
-				onEvent = handleBackToMainMenu,
-				fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
-				shape = "roundedRect"
-			}) ]]
-
-		zoomInBtn = widget.newButton(
-				{
-				label = "+",
-				x = display.contentWidth-20,
-				y =  - 20,
-				width = 30,
-				height = 30,
-				onPress = zoomIn,
-				fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
-				shape = "roundedRect",
-				})
-		zoomOutBtn = widget.newButton(
-			{
-				label = "-",
-				x = display.contentWidth-20,
-				y =  15,
-				width = 30,
-				height = 30,
-				onPress = zoomOut,
-				fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
-				shape = "roundedRect",
-			})
-
-		initialized = true
-	end
 	fancy_log("Maps loaded")
 end
-maps.init = init
 
-group:addEventListener( "touch", dragScreen )
+function scene:show(event)
+	local everything = self.view
+	local phase = event.phase
 
-local function hide()
-	if initialized then
-		--mainMenuBtn.isVisible = false
-		zoomInBtn.isVisible = false
-		zoomOutBtn.isVisible = false
+	if (phase == "will") then
+    -- Code here runs when the scene is still off screen (but is about to come on screen)
+  elseif (phase == "did") then
+    -- Code here runs when the scene is entirely on screen
+  end
+end
 
-		-- This should NEVER be used (breaks the app)
-		--display.remove(group)
-		-- Instead use this:
-		group.isVisible = false
+function scene:hide(event)
+	local everything = self.view
+	local phase = event.phase
+
+	if (phase == "will") then
+		-- Code here runs when the scene is on screen (but is about to go off screen)
+	elseif (phase == "did") then
+		-- Code here runs immediately after the scene goes entirely off screen
 	end
 end
-maps.hide = hide
 
-local function transition(isGoingToBeCurrent)
-  if isGoingToBeCurrent then
-    init()
-    group.y = -display.actualContentHeight
-  else
-    group.y = 0
-  end
-  transitionTimer = timer.performWithDelay(1000 / 60,
-    function()
-      if isGoingToBeCurrent then
-        group.y = group.y + 3
-        if group.y >= 0 then
-          timer.cancel(transitionTimer)
-        end
-      else
-        group.y = group.y - 3
-        if group.y <= -display.actualContentHeight then
-          hide()
-          timer.cancel(transitionTimer)
-        end
-      end
-    end, 0)
+function scene:destroy(event)
+	local sceneGroup = self.view
+  -- Code here runs prior to the removal of scene's view
 end
-maps.transition = transition
 
-return maps
+
+scene:addEventListener("create", scene)
+scene:addEventListener("show", scene)
+scene:addEventListener("hide", scene)
+scene:addEventListener("destroy", scene)
+
+return scene
+
+
+--Gives control to the main menu
+-- local function handleBackToMainMenu(event)
+-- 	if ("ended" == event.phase) then
+-- 		screenController.mainScreen()
+--     end
+-- end
+
+-- local function transition(isGoingToBeCurrent)
+--   if isGoingToBeCurrent then
+--     init()
+--     group.y = -display.actualContentHeight
+--   else
+--     group.y = 0
+--   end
+--   transitionTimer = timer.performWithDelay(1000 / 60,
+--     function()
+--       if isGoingToBeCurrent then
+--         group.y = group.y + 3
+--         if group.y >= 0 then
+--           timer.cancel(transitionTimer)
+--         end
+--       else
+--         group.y = group.y - 3
+--         if group.y <= -display.actualContentHeight then
+--           hide()
+--           timer.cancel(transitionTimer)
+--         end
+--       end
+--     end, 0)
+-- end

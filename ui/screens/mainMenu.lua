@@ -14,7 +14,15 @@ function scene:create(event)
   local everything = self.view
 
   local function handleEvent(event)
-    print("kek")
+    local options = {
+      effect = "slideDown",
+      time = 3000,
+      params = {
+          someKey = "someValue",
+          someOtherKey = 10
+      }
+    }
+    composer.gotoScene("ui.screens.maps", options)
   end
   local function loadImage(file, scale, x, y)
     -- Load img temporarily using deprecated function to get the dimensions
@@ -69,17 +77,18 @@ function scene:create(event)
     cloudsFar = {initGroup(everything), initGroup(everything)}
   end
   do -- load static images
-    staticImages:insert(loadImage("assets/start_screen/tap.png", 0.16, 0, 35))
-    staticImages:insert(loadImage("assets/start_screen/road.png", 0.284, 0, -220))
-    staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.1, -80, -60))
-    staticImages:insert(loadImage("assets/start_screen/building_green.png", 0.1, -20, -70))
-    staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.08, 100, -70))
-    staticImages:insert(loadImage("assets/start_screen/building_purple.png", 0.08, 40, -60))
-    staticImages:insert(loadImage("assets/start_screen/building_yellow.png", 0.08, -140, -100))
-    staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.08, -90, -120))
-    staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.1, 20, -110))
-    staticImages:insert(loadImage("assets/start_screen/building_darkgreen.png", 0.08, 130, -100))
-    staticImages:insert(loadImage("assets/start_screen/sun.png", 0.06, 100, 220))
+    staticImages:insert(loadImage("assets/start_screen/background_blue.png", 0.15 , 0, 0))
+    staticImages:insert(loadImage("assets/start_screen/tap.png", 0.16, 0, -35))
+    staticImages:insert(loadImage("assets/start_screen/road.png", 0.284, 0, 220))
+    staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.1, -80, 60))
+    staticImages:insert(loadImage("assets/start_screen/building_green.png", 0.1, -20, 70))
+    staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.08, 100, 70))
+    staticImages:insert(loadImage("assets/start_screen/building_purple.png", 0.08, 40, 60))
+    staticImages:insert(loadImage("assets/start_screen/building_yellow.png", 0.08, -140, 100))
+    staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.08, -90, 120))
+    staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.1, 20, 110))
+    staticImages:insert(loadImage("assets/start_screen/building_darkgreen.png", 0.08, 130, 100))
+    staticImages:insert(loadImage("assets/start_screen/sun.png", 0.06, 100, -220))
   end
   do -- load clouds
     fillWithCloseClouds(cloudsClose)
@@ -88,7 +97,6 @@ function scene:create(event)
   end
   fancy_log("Main Menu created")
 end
-
 
 function scene:show(event)
   local everything = self.view
