@@ -3,7 +3,7 @@
 
 
 local composer = require("composer")
-local scene = composer.newScene()
+local mapScene = composer.newScene()
 local widget = require("widget")
 
 --local mainMenuBtn = nil
@@ -34,7 +34,7 @@ local allVertices = {
 	{166, 343-45, { -8,-24, 24,2, 14,14, 0,17, -19,5, -23,-7 }}, --20
 	{126, 362-45, { -10,-29, 2,-29, 23,24, -20,35 } }, --21
 	{71, 366-45, { -21,-18, -6,-22, 0,-41, 22,-25, 19,14, -11,24, -29,45, -35,1 }}, --22 
-	{195, 400-45, { -39,-36, -31,-36, -19,-30, -13,-34, 7,-38, 50,4, 7,44, -29,14 }} --23 153,361, 159,361, 173,367, 179,361, 196,359, 237,401, 196,440, 163,411
+	{195, 400-45, { -39,-36, -31,-36, -19,-30, -13,-34, 7,-38, 50,4, 7,44, -29,14 }} --23
 }
 
 local zoomInBtn = nil
@@ -45,15 +45,19 @@ local BcGrWidht = display.contentWidth
 local BcGrHeight = display.contentHeight
 
 
-function scene:create(event)
+function mapScene:create(event)
   local everything = self.view
-	everything.xScale = 1.5
-	everything.yScale = 1.5
+  local group = display.newGroup()
+  --group.x = display.contentCenterX
+  --group.y = display.contentCenterY
+  everything:insert(group)
+	everything.xScale = 1
+	everything.yScale = 1
 
 	local background = display.newImageRect( "assets/map/map_with_districts.png", 320, 570 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
-	everything:insert(background)
+	group:insert(background)
 
 	--Gives the control to the level
 	function handleLevelSelect(event)
@@ -64,7 +68,7 @@ function scene:create(event)
 		end
 	end
 	function dragScreen( event )
-		local screen = everything
+		local screen = group
 		local phase = event.phase
 		if ( "began" == phase ) then
 			-- Set touch focus on the screen
@@ -76,6 +80,31 @@ function scene:create(event)
 			-- Move the screen to the new touch position
 			screen.x = event.x - screen.touchOffsetX
 			screen.y = event.y - screen.touchOffsetY
+			print("screen.x")
+			print(screen.x)
+			print("screen.width")
+			print(screen.width)
+			print("BcGrWidht")
+			print(BcGrWidht)
+			if(screen.x < screen.width ) then
+				screen.x = screen.width
+				
+			end
+			if(screen.x > BcGrWidht - screen.width ) then
+				screen.x = 0
+				
+			end
+
+			--[[if(screen.y < screen.height) then
+				print("up")
+				screen.y = screen.height
+				
+			end
+			if(screen.y > display.contentHeight-screen.height) then
+				print("down")
+				screen.y = display.contentHeight-screen.height
+				
+			end]]
 		elseif ( "ended" == phase or "cancelled" == phase ) then
 			-- Release touch focus on the screen
 			display.currentStage:setFocus( nil )
@@ -90,7 +119,7 @@ function scene:create(event)
 			id = p_id,
 			x = p_x,
 			y = p_y,
-			fillColor = { default={1,0,0,0.5} , over={1,0,0,0.5} },
+			fillColor = { default={1,0,0,0} , over={1,0,0,0} },
 			vertices = p_vertices,
 			shape = "polygon"
 		})
@@ -103,65 +132,89 @@ function scene:create(event)
 			btn = createButton("levelbtn" .. tostring(i), allVertices[i][1], allVertices[i][2], allVertices[i][3])
 			btn.isVisible = true
 			table.insert(districtButtons, {i, btn})
-			everything:insert(btn)
+			group:insert(btn)
 		end
 	end
+	
 
-	--[[mainMenuBtn = widget.newButton()
+	local function handleEvent(event)
+		local options = {
+		  effect = "slideUp",
+		  time = 3000,
+		  params = {
+			  someKey = "someValue",
+			  someOtherKey = 10
+		  }
+		}
+		composer.gotoScene("ui.screens.mainMenu", options)
+	  end
+
+	mainMenuBtn = widget.newButton(
 		{
-		label = "MAIN MENU",
-		x = display.contentCenterX,
+		label = "Main Menu",
+		labelColor = { default={ 1, 1, 1, 1}, over={ 0, 0, 0, 0.5 } },
+		x = display.contentCenterX/2,
 		y = display.contentCenterY + 200,
-		width = 150,
-		height = 35,
-		onEvent = handleBackToMainMenu,
-		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
+		width = 110,
+		height = 25,
+		onPress = handleEvent,
+		fillColor = { default={0,0,1,1}, over={1,0.1,0.7,0.4} },
 		shape = "roundedRect"
-	}) ]]
+	})
+
+	everything:insert(mainMenuBtn)
 
 	function zoomIn()
-	    if(everything.xScale < 4 ) then
-			everything.xScale = everything.xScale + 0.5
-			everything.yScale = everything.yScale + 0.5
-			BcGrWidht = display.contentWidth * everything.xScale
-			BcGrHeight = display.contentHeight * everything.yScale
+	    if(group.xScale < 4 ) then
+			--group.xScale = group.xScale + 0.5
+			--group.yScale = group.yScale + 0.5
+			BcGrWidht = display.contentWidth * group.xScale
+			BcGrHeight = display.contentHeight * group.yScale
+			transition.to( title, {time=1000, transition=easing.inOutQuad, xScale=group.xScale + 0.5, yScale=group.yScale + 0.5, onComplete=group } )
 		end
 	end
 	zoomInBtn = widget.newButton({
 		label = "+",
+		labelColor = { default={ 1, 1, 1, 1}, over={ 0, 0, 0, 0.5 } },
 		x = display.contentWidth-20,
-		y =  - 20,
+		y =  display.contentWidth/50,
 		width = 30,
 		height = 30,
 		onPress = zoomIn,
-		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
+		fillColor = { default={0,0,1,1}, over={1,0.1,0.7,0.4} },
 		shape = "roundedRect",
 	})
+	everything:insert(zoomInBtn)
+
 	function zoomOut()
-		if(everything.xScale > 1) then
-			everything.xScale = everything.xScale - 0.5
-			everything.yScale = everything.yScale - 0.5
-			BcGrWidht = display.contentWidth * everything.xScale
-			BcGrHeight = display.contentHeight * everything.yScale
+		if(group.xScale > 1) then
+			group.xScale = group.xScale - 0.5
+			group.yScale = group.yScale - 0.5
+			BcGrWidht = group.contentWidth * group.xScale
+			BcGrHeight = group.contentHeight * group.yScale
 		end
 	end
 	zoomOutBtn = widget.newButton(	{
 		label = "-",
+		labelColor = { default={ 1, 1, 1, 1}, over={ 0, 0, 0, 0.5 } },
 		x = display.contentWidth-20,
-		y =  15,
+		y =  (display.contentWidth/50)+40,
 		width = 30,
 		height = 30,
 		onPress = zoomOut,
-		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
+		fillColor = { default={0,0,1,1}, over={1,0.1,0.7,0.4} },
 		shape = "roundedRect",
 	})
+	everything:insert(zoomOutBtn)
 
 	everything:addEventListener( "touch", dragScreen )
+	
+	
 
 	fancy_log("Maps loaded")
 end
 
-function scene:show(event)
+function mapScene:show(event)
 	local everything = self.view
 	local phase = event.phase
 
@@ -172,7 +225,7 @@ function scene:show(event)
   end
 end
 
-function scene:hide(event)
+function mapScene:hide(event)
 	local everything = self.view
 	local phase = event.phase
 
@@ -183,18 +236,29 @@ function scene:hide(event)
 	end
 end
 
-function scene:destroy(event)
+function mapScene:destroy(event)
 	local sceneGroup = self.view
   -- Code here runs prior to the removal of scene's view
 end
 
+--[[function keyHandle(event)
+	print("Asd")
+	if ( event.keyName == "back" ) then
+		print("Asd")
+		handleEventBack(event)
+		print("Asd")
+    end
+end
 
-scene:addEventListener("create", scene)
-scene:addEventListener("show", scene)
-scene:addEventListener("hide", scene)
-scene:addEventListener("destroy", scene)
+mapScene:addEventListener( "key", keyHandle )]]
 
-return scene
+
+mapScene:addEventListener("create", mapScene)
+mapScene:addEventListener("show", mapScene)
+mapScene:addEventListener("hide", mapScene)
+mapScene:addEventListener("destroy", mapScene)
+
+return mapScene
 
 
 --Gives control to the main menu
