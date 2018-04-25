@@ -33,7 +33,7 @@ local allVertices = {
 	{185, 327-45, { -17,-18, 9,-14, 16,14, 7,24, -26,-3 } }, --19
 	{166, 343-45, { -8,-24, 24,2, 14,14, 0,17, -19,5, -23,-7 }}, --20
 	{126, 362-45, { -10,-29, 2,-29, 23,24, -20,35 } }, --21
-	{71, 366-45, { -21,-18, -6,-22, 0,-41, 22,-25, 19,14, -11,24, -29,45, -35,1 }}, --22 
+	{71, 366-45, { -21,-18, -6,-22, 0,-41, 22,-25, 19,14, -11,24, -29,45, -35,1 }}, --22
 	{195, 400-45, { -39,-36, -31,-36, -19,-30, -13,-34, 7,-38, 50,4, 7,44, -29,14 }} --23 153,361, 159,361, 173,367, 179,361, 196,359, 237,401, 196,440, 163,411
 }
 
@@ -58,9 +58,10 @@ function scene:create(event)
 	--Gives the control to the level
 	function handleLevelSelect(event)
 		if ("ended" == event.phase and event.target.id ~= nil and string.match(event.target.id, "levelbtn")) then
-			--TODO: level select logic
-			--screenController.levelScreen(event.target.id)
-			print("TODO")
+			local level = string.match(event.target.id, "%d+")
+			currentLevel = require("ui.screens.level")
+			currentLevel.init(tonumber(level))
+			fancy_log("Changed screen to " .. level)
 		end
 	end
 	function dragScreen( event )

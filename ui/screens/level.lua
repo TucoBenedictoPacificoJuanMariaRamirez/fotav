@@ -25,9 +25,9 @@ local function init(which)
 	end
 	--bg = display.newImageRect("assets/background.png", 360, 570)
 	-- load background from logic
-	
+
 	-- load buttons from logic
-	
+
 	cso = widget.newButton(
 		{
 		id = 1,
@@ -39,14 +39,14 @@ local function init(which)
 		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
 		shape = "roundedRect"
 		})
-	
+
 	logicTimer(logic.time)
 	levelTimer(logic.time)
 	endCheck()
 	initialized = true
 
 	print("rating: "..rating())
-		
+
 end
 level.init = init
 
@@ -61,7 +61,7 @@ end
 function updateText()
 	display.remove(tempText)
 	tempText = display.newText(logic.getCurrentTempOf("h1"), display.contentCenterX, cso.y-70, native.systemFone, 30)
-	
+
 	display.remove(levelTime)
 	levelTime = display.newText(logic.time, display.contentCenterX, 100, native.systemFont, 30)
 end
