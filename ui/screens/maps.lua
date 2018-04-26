@@ -58,10 +58,15 @@ function scene:create(event)
 	--Gives the control to the level
 	function handleLevelSelect(event)
 		if ("ended" == event.phase and event.target.id ~= nil and string.match(event.target.id, "levelbtn")) then
-			local level = string.match(event.target.id, "%d+")
-			currentLevel = require("ui.screens.level")
-			currentLevel.init(tonumber(level))
-			fancy_log("Changed screen to " .. level)
+			-- currentLevel = require("ui.screens.level")
+			-- currentLevel.init(tonumber(level))
+			local options = {
+				params = {
+					level = string.match(event.target.id, "%d+")
+				}
+			}
+			composer.gotoScene("ui.screens.level", options)
+			fancy_log("Changed screen to " .. options.params.level)
 		end
 	end
 	function dragScreen( event )
@@ -170,6 +175,8 @@ function scene:show(event)
     -- Code here runs when the scene is still off screen (but is about to come on screen)
   elseif (phase == "did") then
     -- Code here runs when the scene is entirely on screen
+		zoomInBtn.isVisible = true
+		zoomOutBtn.isVisible = true
   end
 end
 
@@ -179,6 +186,8 @@ function scene:hide(event)
 
 	if (phase == "will") then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
+		zoomInBtn.isVisible = false
+		zoomOutBtn.isVisible = false
 	elseif (phase == "did") then
 		-- Code here runs immediately after the scene goes entirely off screen
 	end
