@@ -5,4 +5,6 @@ TODO list:
  * Vissza gomb implementációja
  * Pinch zoom (kétujjas zoom)
  * show/hide/destroy functionök logikája
- * logic: gomb felengedésre is reagál, event type javítása(?)
+ * logic: isEnd, endCheck()
+          isWithinError() tesztelése
+          rating() tesztelése
