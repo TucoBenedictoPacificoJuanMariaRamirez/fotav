@@ -14,7 +14,9 @@ logic.pipes = nil
 logic.houses = nil
 logic.timer = nil
 logic.isEnd = false
-logic.tapCooldownFlag = false
+logic.tappable = true
+logic.remaining = 0
+logic.tapCoolDown = false --used to prevent continuous tapping effect; while true, tap is not available ("cooling down")
 count = 0
 
 --storing current house temperatures (table of {house, temp})
@@ -35,6 +37,7 @@ function createLevel(levelNum)
     logic.time = level.time
     logic.pipes = level.pipes
     logic.houses = level.houses
+    logic.remaining = level.time
 
     initCurrentTemps()
     setCurrentTempOf("h1",30)
@@ -53,14 +56,14 @@ end
 
 --called by the eventListener on tap if the flag is not set
 function pipeTap(event)
-    if not tapCooldownFlag then
+    if logic.tappable and not logic.tapCoolDown then --tappable and not in cooldown
         print("tapped")
-        tapCooldownFlag = true
         pipeName = "p" .. event.target.id
         cnt = tableLength(logic.pipes[pipeName].houses)
         for i=1, cnt do
             modifyTempOnTap(logic.pipes[pipeName].houses[i], pipeName)
         end
+        logic.tapCoolDown = true
     end
 end
 logic.pipeTap = pipeTap
@@ -155,30 +158,21 @@ function logicTimer(count)
     ms = 100
     t = timer.performWithDelay(ms
             , function()
-                count = count - 1/ms
-                print(count)
-                setFlag(count)
-                lastCheck()
-              end
-            , count*1000/ms
+                if count >= 0.005 then
+                    count = count-ms/1000
+                    logic.remaining = count
+                    print(logic.remaining)
+                    cooling(1)
+                else 
+                    logic.tappable = false
+                    print(logic.tappable)
+                end
+                logic.tapCoolDown = false
+            end
+            , (count*1000/ms)+1
         )
-
-    if isEnd then
-        timer.cancel(t)
-    end
 end
 logic.logicTimer = logicTimer
-
-function setFlag(count)
-    cooling(level.decrease)
-    tapCooldownFlag=false
-end
-
-function lastCheck()
-    if count<=0 then
-        tapCooldownFlag=true
-    end
-end
 
 function endCheck()
     t = timer.performWithDelay(200
