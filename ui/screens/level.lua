@@ -1,35 +1,36 @@
--- This file describes the UI of Level 1
 
-local level = {}
 
--- load logic for this map
+local composer = require("composer")
+local scene = composer.newScene()
+local widget = require("widget")
+
 local logic = require("logic.logic")
 
-local initialized = false
-
 local text = nil
+local levelTime = nil
+local levelTimer = nil
+
+-- TODO: not implemented yet
 local mapsBtn = nil
-
-local tempText = nil
-
 local function handleBackToMap(event)
 	if ("ended" == event.phase) then
-		screenController.mapsScreen()
-    end
+		composer.gotoScene("ui.screens.maps")
+	end
 end
 
-local function init(which)
-	if logic.createLevel(which) < 0 then
+
+function scene:create(event)
+	local everything = self.view
+	local params = event.params
+
+	if logic.createLevel(params.level) < 0 then
 		print("ERROR: Map could not be loaded.")
 		return
 	end
 	--bg = display.newImageRect("assets/background.png", 360, 570)
 	-- load background from logic
-	
 	-- load buttons from logic
-	
-	cso = widget.newButton(
-		{
+	cso = widget.newButton({
 		id = 1,
 		x = display.contentCenterX,
 		y = display.contentCenterY + 200,
@@ -38,41 +39,59 @@ local function init(which)
 		onEvent = logic.pipeTap,
 		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
 		shape = "roundedRect"
-		})
-	
-	logicTimer(logic.time)
-	levelTimer(logic.time)
-	endCheck()
-	initialized = true
+	})
+
+	text = display.newText("", display.contentCenterX, cso.y-70, native.systemFont, 30)
+	levelTime = display.newText("", display.contentCenterX, 100, native.systemFont, 30)
+	everything:insert(text)
+	everything:insert(levelTime)
 
 	print("rating: "..rating())
-		
-end
-level.init = init
-
-function levelTimer(count)
-	ms = 10
-    t = timer.performWithDelay(ms, function () updateText() end, count*1000/ms)
-    if logic.isEnd then
-        timer.cancel(t)
-    end
 end
 
-function updateText()
-	display.remove(tempText)
-	tempText = display.newText(logic.getCurrentTempOf("h1"), display.contentCenterX, cso.y-70, native.systemFone, 30)
-	
-	display.remove(levelTime)
-	levelTime = display.newText(logic.time, display.contentCenterX, 100, native.systemFont, 30)
+function scene:show(event)
+	local everything = self.view
+	local phase = event.phase
+
+	if (phase == "will") then
+    -- Code here runs when the scene is still off screen (but is about to come on screen)
+  elseif (phase == "did") then
+    -- Code here runs when the scene is entirely on screen
+		local function updateText()
+			text.text = logic.getCurrentTempOf("h1")
+			levelTime.text = logic.time
+			if logic.isEnd then timer.cancel(levelTimer) end
+		end
+
+		local ms = 10
+    levelTimer = timer.performWithDelay(ms, updateText, (logic.time)*1000/ms)
+		logicTimer(logic.time)
+		endCheck()
+  end
 end
 
-local function hide()
-	-- This might not be good use on this screen, since we want to reinit it (I guess)
-	if initialized then
-		display.remove(text)
-		mapsBtn.isVisible = false
+function scene:hide(event)
+	local everything = self.view
+	local phase = event.phase
+
+	if (phase == "will") then
+		-- Code here runs when the scene is on screen (but is about to go off screen)
+	elseif (phase == "did") then
+		-- Code here runs immediately after the scene goes entirely off screen
+		--mapsBtn.isVisible = false
+		timer.cancel(levelTimer)
 	end
 end
-level.hide = hide
 
-return level
+function scene:destroy(event)
+	local sceneGroup = self.view
+  -- Code here runs prior to the removal of scene's view
+end
+
+
+scene:addEventListener("create", scene)
+scene:addEventListener("show", scene)
+scene:addEventListener("hide", scene)
+scene:addEventListener("destroy", scene)
+
+return scene

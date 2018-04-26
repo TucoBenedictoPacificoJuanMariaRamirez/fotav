@@ -16,11 +16,7 @@ function scene:create(event)
   local function handleEvent(event)
     local options = {
       effect = "slideDown",
-      time = 3000,
-      params = {
-          someKey = "someValue",
-          someOtherKey = 10
-      }
+      time = 1000,
     }
     composer.gotoScene("ui.screens.maps", options)
   end
@@ -117,9 +113,9 @@ function scene:show(event)
 
   if (phase == "will") then
     -- Code here runs when the scene is still off screen (but is about to come on screen)
-    animationTimer = timer.performWithDelay(1000 / 60, animateClouds, 0)
   elseif (phase == "did") then
     -- Code here runs when the scene is entirely on screen
+    animationTimer = timer.performWithDelay(1000 / 60, animateClouds, 0)
     toMapsBtn.isVisible = true
   end
 end
