@@ -1,10 +1,11 @@
-
+require("math")
 
 local composer = require("composer")
 local scene = composer.newScene()
 local widget = require("widget")
 
 local logic = require("logic.logic")
+
 
 local text = nil
 local levelTime = nil
@@ -59,12 +60,19 @@ function scene:show(event)
     -- Code here runs when the scene is entirely on screen
 		local function updateText()
 			text.text = logic.getCurrentTempOf("h1")
-			levelTime.text = logic.time
-			if logic.isEnd then timer.cancel(levelTimer) end
+			if logic.remaining < 0.005 then
+				levelTime.text = "--"
+			else 
+				levelTime.text = math.floor(logic.remaining)
+			end
+			
+			if not logic.tappable then 
+				timer.cancel(levelTimer)
+			end
 		end
 
 		local ms = 10
-    levelTimer = timer.performWithDelay(ms, updateText, (logic.time)*1000/ms)
+    levelTimer = timer.performWithDelay(ms, updateText, (logic.remaining)*1000/ms)
 		logicTimer(logic.time)
 		endCheck()
   end
