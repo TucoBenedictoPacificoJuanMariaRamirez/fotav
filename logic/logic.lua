@@ -56,7 +56,9 @@ end
 
 --called by the eventListener on tap if the flag is not set
 function pipeTap(event)
-    if logic.tappable and not logic.tapCoolDown then --tappable and not in cooldown
+    if ( event.phase == "began" ) then print("began") end
+    if (event.phase=="ended") then print("ended") end
+    if logic.tappable and not logic.tapCoolDown and not (event.phase=="ended") then
         print("tapped")
         pipeName = "p" .. event.target.id
         cnt = tableLength(logic.pipes[pipeName].houses)
