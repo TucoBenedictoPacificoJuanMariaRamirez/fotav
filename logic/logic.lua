@@ -145,13 +145,10 @@ function setCurrentTempOf(houseName, new)
 end
 logic.setCurrentTempOf = setCurrentTempOf
 
-function cooling(temp)
+function cooling()
     for key, value in pairs(currentTemps) do
-        if value[2] - temp > level.envTemp then
-            value[2] = value[2]-temp
-        else
-            value[2]=level.envTemp
-        end
+        house = value[1] 
+        setCurrentTempOf(house, math.floor( (getCurrentTempOf(house)*100 + level.envTemp*20) / (100+20) ) )
     end
 end
 
@@ -164,7 +161,7 @@ function logicTimer(count)
                     count = count-ms/1000
                     logic.remaining = count
                     print(logic.remaining)
-                    cooling(1)
+                    --cooling()--1)
                 else 
                     logic.tappable = false
                     print(logic.tappable)
@@ -173,6 +170,7 @@ function logicTimer(count)
             end
             , (count*1000/ms)+1
         )
+    t2 = timer.performWithDelay(1000, function() print("cooling") cooling() end, logic.time)
 end
 logic.logicTimer = logicTimer
 
