@@ -6,7 +6,7 @@ maps =
 {
     l1 = { --level 1
         envTemp = 20, --environment temperature
-        limit = 4, --error limit
+        limit = 2, --error limit
         decrease = 1, --decrease of house temperature per second
         time = 25, --level gametime
         pipes = { --table of pipes
@@ -19,7 +19,7 @@ maps =
         },
         houses = {
             h1 = {
-                goal = 70 --goal temperature
+                goal = 50 --goal temperature
             }
         }
     },

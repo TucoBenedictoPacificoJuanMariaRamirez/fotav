@@ -123,6 +123,20 @@ function isWithinError(house)
     return (c > g-l  and  c < g+l)
 end
 
+function endCheck()
+    t = timer.performWithDelay(200
+            , function()
+                print("rating: "..rating())
+                if rating()==3 then
+                    print("              vege")
+                    isEnd = true
+                    --switch to endscreen
+                end
+              end
+        )
+end
+logic.endCheck = endCheck
+
 function getCurrentTempOf(houseName)
     for key, value in pairs(currentTemps) do
         for key2, value2 in pairs(value) do
@@ -148,49 +162,29 @@ logic.setCurrentTempOf = setCurrentTempOf
 function cooling()
     for key, value in pairs(currentTemps) do
         house = value[1] 
-        setCurrentTempOf(house, math.floor( (getCurrentTempOf(house)*100 + level.envTemp*20) / (100+20) ) )
+        setCurrentTempOf(house, math.floor( (getCurrentTempOf(house)*100 + level.envTemp*10) / (100+10) ) )
     end
 end
 
 function logicTimer(count)
-    print(count)
     ms = 100
     t = timer.performWithDelay(ms
             , function()
-                if count >= 0.005 then
-                    count = count-ms/1000
-                    logic.remaining = count
-                    print(logic.remaining)
-                    --cooling()--1)
-                else 
-                    logic.tappable = false
-                    print(logic.tappable)
-                end
-                logic.tapCoolDown = false
+                if not isEnd then
+                    if count >= 0.005 then
+                        count = count-ms/1000
+                        logic.remaining = count
+                    else 
+                        logic.tappable = false
+                    end
+                    logic.tapCoolDown = false
+                end 
             end
             , (count*1000/ms)+1
         )
-    t2 = timer.performWithDelay(1000, function() print("cooling") cooling() end, logic.time)
+    t2 = timer.performWithDelay(200, function() if not isEnd then cooling() endCheck() end end, logic.time*5)
 end
 logic.logicTimer = logicTimer
-
-function endCheck()
-    t = timer.performWithDelay(200
-            , function()
-                print("endCheck")
-                if rating()==3 then
-                    print("              vege")
-                    isEnd = true
-                    --switch to endscreen
-                end
-              end
-        )
-
-    if isEnd then
-        timer.cancel(t)
-    end
-end
-logic.endCheck = endCheck
 
 function print2D( table )
     for key, value in pairs(table) do
@@ -205,6 +199,6 @@ function tableLength(T)
     local count = 0
     for _ in pairs(T) do count = count + 1 end
     return count
-  end
+end
 
 return logic

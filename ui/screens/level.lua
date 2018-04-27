@@ -10,6 +10,7 @@ local logic = require("logic.logic")
 local text = nil
 local levelTime = nil
 local levelTimer = nil
+local ratingText = nil
 
 -- TODO: not implemented yet
 local mapsBtn = nil
@@ -44,10 +45,11 @@ function scene:create(event)
 
 	text = display.newText("", display.contentCenterX, cso.y-70, native.systemFont, 30)
 	levelTime = display.newText("", display.contentCenterX, 100, native.systemFont, 30)
+	ratingText = display.newText("", display.contentCenterX, 10, native.systemFont, 15)
 	everything:insert(text)
 	everything:insert(levelTime)
+	everything:insert(ratingText)
 
-	print("rating: "..rating())
 end
 
 function scene:show(event)
@@ -61,7 +63,9 @@ function scene:show(event)
 		local function updateText()
 			text.text = logic.getCurrentTempOf("h1")
 			if logic.remaining < 0.005 then
-				levelTime.text = "--"
+				levelTime.text = "You are out of time!"
+				ratingText = rating()
+
 			else 
 				levelTime.text = math.floor(logic.remaining)
 			end
