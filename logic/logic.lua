@@ -124,7 +124,7 @@ function isWithinError(house)
 end
 
 function endCheck()
-    t = timer.performWithDelay(ms
+    t = timer.performWithDelay(logic.ms
             , function()
                 print("rating: "..rating())
                 if rating()==3 then

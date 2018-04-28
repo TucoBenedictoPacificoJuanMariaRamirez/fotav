@@ -5,4 +5,4 @@ TODO list:
  * Vissza gomb implementációja
  * Pinch zoom (kétujjas zoom)
  * show/hide/destroy functionök logikája
- * level/logic javítása
+ * homescreen felhők randomizálása
