@@ -6,7 +6,6 @@ local widget = require("widget")
 
 local logic = require("logic.logic")
 
-
 local text = nil
 local levelTime = nil
 local levelTimer = nil
@@ -45,7 +44,7 @@ function scene:create(event)
 
 	text = display.newText("", display.contentCenterX, cso.y-70, native.systemFont, 30)
 	levelTime = display.newText("", display.contentCenterX, 100, native.systemFont, 30)
-	ratingText = display.newText("", display.contentCenterX, 10, native.systemFont, 15)
+	ratingText = display.newText("rating: 0", display.contentCenterX, 100-30, native.systemFont, 15)
 	everything:insert(text)
 	everything:insert(levelTime)
 	everything:insert(ratingText)
@@ -60,25 +59,30 @@ function scene:show(event)
     -- Code here runs when the scene is still off screen (but is about to come on screen)
   elseif (phase == "did") then
     -- Code here runs when the scene is entirely on screen
-		local function updateText()
-			text.text = logic.getCurrentTempOf("h1")
-			if logic.remaining < 0.005 then
-				levelTime.text = "You are out of time!"
-				ratingText = rating()
-
-			else 
-				levelTime.text = math.floor(logic.remaining)
-			end
-			
-			if not logic.tappable then 
-				timer.cancel(levelTimer)
-			end
+	local function updateText()
+		text.text = logic.getCurrentTempOf("h1")
+		s="rating: "
+		cnt=rating()
+		for i=1, cnt do
+			s = s.."*"
 		end
+		ratingText.text =  s
+							
+		if logic.remaining < logic.ms/1000 then
+			levelTime.text = "Game over!"
+		else 
+			levelTime.text = math.floor(logic.remaining)
+		end
+		
+		if not logic.tappable then 
+			timer.cancel(levelTimer)
+		end
+	end
 
-		local ms = 10
-    levelTimer = timer.performWithDelay(ms, updateText, (logic.remaining)*1000/ms)
-		logicTimer(logic.time)
-		endCheck()
+    levelTimer = timer.performWithDelay(logic.ms, updateText, (logic.remaining)*1000/logic.ms+1)
+	logicTimer(logic.time)
+	endCheck()
+
   end
 end
 

@@ -7,6 +7,7 @@ require("math")
 local logic = {}
 
 level = nil
+
 logic.limit = nil
 logic.decrease = nil
 logic.time = nil
@@ -17,6 +18,7 @@ logic.isEnd = false
 logic.tappable = true
 logic.remaining = 0
 logic.tapCoolDown = false --used to prevent continuous tapping effect; while true, tap is not available ("cooling down")
+logic.ms = 100 --fixed timer rate
 count = 0
 
 --storing current house temperatures (table of {house, temp})
@@ -56,8 +58,6 @@ end
 
 --called by the eventListener on tap if the flag is not set
 function pipeTap(event)
-    if ( event.phase == "began" ) then print("began") end
-    if (event.phase=="ended") then print("ended") end
     if logic.tappable and not logic.tapCoolDown and not (event.phase=="ended") then
         print("tapped")
         pipeName = "p" .. event.target.id
@@ -124,7 +124,7 @@ function isWithinError(house)
 end
 
 function endCheck()
-    t = timer.performWithDelay(200
+    t = timer.performWithDelay(ms
             , function()
                 print("rating: "..rating())
                 if rating()==3 then
@@ -161,18 +161,18 @@ logic.setCurrentTempOf = setCurrentTempOf
 
 function cooling()
     for key, value in pairs(currentTemps) do
-        house = value[1] 
-        setCurrentTempOf(house, math.floor( (getCurrentTempOf(house)*100 + level.envTemp*10) / (100+10) ) )
+        local house = value[1] 
+        local toSet = (getCurrentTempOf(house)*100 + level.envTemp*1) / (100+1)
+        setCurrentTempOf(house, round(toSet,1))
     end
 end
 
 function logicTimer(count)
-    ms = 100
-    t = timer.performWithDelay(ms
+    t = timer.performWithDelay(logic.ms
             , function()
                 if not isEnd then
                     if count >= 0.005 then
-                        count = count-ms/1000
+                        count = count-logic.ms/1000
                         logic.remaining = count
                     else 
                         logic.tappable = false
@@ -180,9 +180,9 @@ function logicTimer(count)
                     logic.tapCoolDown = false
                 end 
             end
-            , (count*1000/ms)+1
+            , (count*1000/logic.ms)
         )
-    t2 = timer.performWithDelay(200, function() if not isEnd then cooling() endCheck() end end, logic.time*5)
+    t2 = timer.performWithDelay(logic.ms, function() if not isEnd then cooling() endCheck() end end, logic.time*1000/logic.ms)
 end
 logic.logicTimer = logicTimer
 
@@ -199,6 +199,12 @@ function tableLength(T)
     local count = 0
     for _ in pairs(T) do count = count + 1 end
     return count
+end
+
+--http://lua-users.org/wiki/SimpleRound
+function round(num, numDecimalPlaces)
+    local mult = 10^(numDecimalPlaces or 0)
+    return math.floor(num * mult + 0.5) / mult
 end
 
 return logic
