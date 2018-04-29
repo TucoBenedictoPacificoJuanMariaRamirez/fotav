@@ -19,13 +19,15 @@ local function handleBackToMap(event)
 	end
 end
 
-
 function scene:create(event)
 	local everything = self.view
 	local params = event.params
 
 	if logic.createLevel(params.level) < 0 then
 		print("ERROR: Map could not be loaded.")
+		-- for some reason it cannot return to maps (only black screen appears)
+		composer.gotoScene("ui.screens.mainMenu")
+		composer.removeScene("ui.screens.level")
 		return
 	end
 	--bg = display.newImageRect("assets/background.png", 360, 570)
@@ -87,7 +89,9 @@ function scene:hide(event)
 	elseif (phase == "did") then
 		-- Code here runs immediately after the scene goes entirely off screen
 		--mapsBtn.isVisible = false
-		timer.cancel(levelTimer)
+		if (levelTimer ~= nil) then
+			timer.cancel(levelTimer)
+		end
 	end
 end
 
