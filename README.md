@@ -31,6 +31,15 @@ Ezzel a játék be is töltődött és elindult.
 * Ha megvan az apk, akkor azt valamilyen módon másoljuk át egy Androidos készülékre és telepítsük ott fel. A játéknak ugyanúgy kell ott is futnia, feltéve, hogy az eszköz hardverkapacitása elégséges.
 
 ---
+### Tervezett funkciók, fejlesztések
+* Mindegyik pályát be lehessen tölteni és az alkalmazáslogika helyesen működjön mindenhol.
+* A pályák végén megjelenjen egy felület, ahol látjuk a teljesítményünket és visszatérhetünk a térképre.
+* A térkép jelenlegi hibáinak javítása, a kezelés fejlesztése.
+
+* Tesztesetek írása az alkalmazás minden részéhez (maga a Unit tesztek alapjai már megvannak).
+* LDoc használata a source dokumentáció elkészítéséhez.
+
+---
 
 TODO list:
  * Vissza gomb implementációja
