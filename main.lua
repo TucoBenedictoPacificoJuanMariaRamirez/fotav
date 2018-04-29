@@ -1,7 +1,15 @@
+-- Fotav project
 
-local composer = require("composer")
+-- @authors
+-- Fehér Szabolcs
+-- Gál Martin
+-- Nagy Bence
+-- Szabó Dániel
 
 -- This file is the entry point of the whole app
+
+-- The composer manages the screens and everything related to them
+local composer = require("composer")
 
 function fancy_log(message)
 	if message == nil then
@@ -39,4 +47,5 @@ end
 -- }
 composer.gotoScene("ui.screens.mainMenu")
 
+-- Unit tests
 -- require "tests.testsmain"

@@ -12,9 +12,12 @@ Maga a kód csupán egy Lua szkript, ami magán a Corona platformon tud interpre
 A projekt teszteléséhez és Desktop környezetben való futtatásához, továbbá a Build-hez a Corona Game Engine szükséges, amit a következő weboldalról érhetünk el:
 https://coronalabs.com/product/
 
+Egy leírás a telepítésről (összefoglalva alább is szerepel):
+https://docs.coronalabs.com/guide/start/installWin/index.html
+
 A letöltéshez regisztráció szükséges, ami ingyenes, akárcsak maga a Corona Engine.
-Miután regisztráltunk és beléptünk, töltsük le a Corona SDK-t, ami magában foglalja mindazt, amire szükségünk lesz, majd telepítsük a szoftvert.
-A telepítés után a Corona Simulator-t kell elindítanunk. Ez a program a következőket tudja:
+Miután regisztráltunk és beléptünk, töltsük le a Corona SDK-t, ami magában foglalja mindazt, amire szükségünk lesz, majd telepítsük a szoftvert. A Corona-n kívül csupán egy helyesen feltelepített JDK-ra lesz szükség (http://www.oracle.com/technetwork/java/javase/downloads/index.html).
+A telepítés után a Corona Simulator-t kell elindítanunk. A programot a webes felületen készített felhasználónkkal tudjuk használni. Az eszköz a következőket tudja:
 * Kezeli a Corona SDK-s projektjeinket.
 * Egy szimulátort biztosít, ahol Desktop környezetben tudjuk tesztelni a megírt kódunkat akár különböző eszközökön is.
 * Egy konzolablakot is megnyit, ahol a játékunk log-jait láthatjuk

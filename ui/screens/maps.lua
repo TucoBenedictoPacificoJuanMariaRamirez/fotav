@@ -1,7 +1,6 @@
 -- 2018.04.15. New button-construction structure implemented	(daszabo)
 -- This file contains the UI element objects for the maps screen
 
-
 local composer = require("composer")
 local mapScene = composer.newScene()
 local widget = require("widget")
@@ -214,7 +213,6 @@ function mapScene:create(event)
 	everything:insert(zoomOutBtn)
 
 	everything:addEventListener( "touch", dragScreen )
-	
 	
 
 	fancy_log("Maps loaded")

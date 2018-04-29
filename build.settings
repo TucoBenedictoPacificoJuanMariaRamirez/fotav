@@ -22,6 +22,7 @@ settings =
 		{
 			"android.permission.INTERNET",
 		},
+		versionCode = "2",
 	},
 
 	--
