@@ -165,6 +165,7 @@ function logicTimer(count)
                     cooling(1)
                 else 
                     logic.tappable = false
+					isEnd = true
                     print(logic.tappable)
                 end
                 logic.tapCoolDown = false

@@ -118,6 +118,7 @@ function scene:show(event)
     animationTimer = timer.performWithDelay(1000 / 60, animateClouds, 0)
     toMapsBtn.isVisible = true
   end
+  fancy_log("Main Menu showed")
 end
 
 function scene:hide(event)
@@ -131,11 +132,13 @@ function scene:hide(event)
     -- Code here runs immediately after the scene goes entirely off screen
     timer.cancel(animationTimer)
   end
+  fancy_log("Main Menu hid")
 end
 
 function scene:destroy(event)
   local sceneGroup = self.view
   -- Code here runs prior to the removal of scene's view
+  fancy_log("Main Menu destroyed")
 end
 
 -- local function transition(isGoingToBeCurrent)

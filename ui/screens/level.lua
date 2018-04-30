@@ -6,10 +6,10 @@ local widget = require("widget")
 
 local logic = require("logic.logic")
 
-
 local text = nil
 local levelTime = nil
 local levelTimer = nil
+local levelNumber = nil
 
 -- TODO: not implemented yet
 local mapsBtn = nil
@@ -22,9 +22,10 @@ end
 function scene:create(event)
 	local everything = self.view
 	local params = event.params
+	levelNumber = params.level
 
 	if logic.createLevel(params.level) < 0 then
-		print("ERROR: Map could not be loaded.")
+		print("ERROR: Level could not be loaded.")
 		-- for some reason it cannot return to maps (only black screen appears)
 		composer.gotoScene("ui.screens.mainMenu")
 		composer.removeScene("ui.screens.level")
@@ -48,7 +49,8 @@ function scene:create(event)
 	levelTime = display.newText("", display.contentCenterX, 100, native.systemFont, 30)
 	everything:insert(text)
 	everything:insert(levelTime)
-
+	
+	fancy_log("Level " .. tostring(levelNumber) .. " created")
 	print("rating: "..rating())
 end
 
@@ -60,7 +62,7 @@ function scene:show(event)
     -- Code here runs when the scene is still off screen (but is about to come on screen)
   elseif (phase == "did") then
     -- Code here runs when the scene is entirely on screen
-		local function updateText()
+		local function updateUI()
 			text.text = logic.getCurrentTempOf("h1")
 			if logic.remaining < 0.005 then
 				levelTime.text = "--"
@@ -70,14 +72,16 @@ function scene:show(event)
 			
 			if not logic.tappable then 
 				timer.cancel(levelTimer)
+				composer.gotoScene("ui.screens.endGame")
 			end
 		end
 
 		local ms = 10
-    levelTimer = timer.performWithDelay(ms, updateText, (logic.remaining)*1000/ms)
+		levelTimer = timer.performWithDelay(ms, updateUI, (logic.remaining)*1000/ms)
 		logicTimer(logic.time)
 		endCheck()
   end
+  fancy_log("Level " .. tostring(levelNumber) .. " showed")
 end
 
 function scene:hide(event)
@@ -86,6 +90,7 @@ function scene:hide(event)
 
 	if (phase == "will") then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
+		cso.isVisible = false
 	elseif (phase == "did") then
 		-- Code here runs immediately after the scene goes entirely off screen
 		--mapsBtn.isVisible = false
@@ -93,11 +98,13 @@ function scene:hide(event)
 			timer.cancel(levelTimer)
 		end
 	end
+	fancy_log("Level " .. tostring(levelNumber) .. " hid")
 end
 
 function scene:destroy(event)
 	local sceneGroup = self.view
   -- Code here runs prior to the removal of scene's view
+  fancy_log("Level " .. tostring(levelNumber) .. " destroyed")
 end
 
 

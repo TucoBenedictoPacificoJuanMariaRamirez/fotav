@@ -69,7 +69,7 @@ function mapScene:create(event)
 				}
 			}
 			composer.gotoScene("ui.screens.level", options)
-			fancy_log("Changed screen to " .. options.params.level)
+			--fancy_log("Changed screen to " .. options.params.level)
 		end
 	end
 	function dragScreen( event )
@@ -215,7 +215,7 @@ function mapScene:create(event)
 	everything:addEventListener( "touch", dragScreen )
 	
 
-	fancy_log("Maps loaded")
+	fancy_log("Maps created")
 end
 
 function mapScene:show(event)
@@ -229,6 +229,7 @@ function mapScene:show(event)
 		zoomInBtn.isVisible = true
 		zoomOutBtn.isVisible = true
   end
+  fancy_log("Maps showed")
 end
 
 function mapScene:hide(event)
@@ -242,11 +243,13 @@ function mapScene:hide(event)
 	elseif (phase == "did") then
 		-- Code here runs immediately after the scene goes entirely off screen
 	end
+	fancy_log("Maps hid")
 end
 
 function mapScene:destroy(event)
 	local sceneGroup = self.view
   -- Code here runs prior to the removal of scene's view
+  fancy_log("Maps destroyed")
 end
 
 --[[function keyHandle(event)
