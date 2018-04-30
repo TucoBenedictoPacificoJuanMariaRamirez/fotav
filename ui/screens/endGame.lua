@@ -51,6 +51,38 @@ function endGameScene:destroy(event)
 	fancy_log("Endgame destroyed")
 end
 
+function storeMapResult(map, score)
+	local path = system.pathForFile( "mapResults", system.ApplicationSupportDirectory )
+	local fh = io.open( path, "r" )
+	
+	if not fh then -- File open failed, it is the first time, so it must be created
+		createGameDataFile(path)
+	end
+	
+	local contents = fh:read( "*a" )
+	-- TODO: change values and write them back to file
+	  
+	io.close( fh )
+end
+
+function createGameDataFile(path)
+	-- Create file since it doesn't exist yet
+	fh = io.open( path, "w" )
+ 
+	if fh then
+		for i=1,23 do
+		-- first field is the map[i]
+		-- second field is the rating, default 0
+		-- third field is the best time on that map
+		fh:write( "map" .. tostring(i) .. ",0,-1")
+		fancy_log("Game Data file created")
+	end
+	else
+		fancy_log("Failed to create Game Data file")
+	end
+	io.close( fh )
+end
+
 endGameScene:addEventListener("create", endGameScene)
 endGameScene:addEventListener("show", endGameScene)
 endGameScene:addEventListener("hide", endGameScene)
