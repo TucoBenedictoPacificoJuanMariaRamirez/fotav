@@ -6,7 +6,6 @@ local widget = require("widget")
 
 local logic = require("logic.logic")
 
-local text = nil
 local houseTempLabels = {}
 local pipeTempLabels = {}
 local levelTime = nil
@@ -50,7 +49,7 @@ function scene:create(event)
 
 	do
 		for i = 1, housesCount do
-			newHouseLabel = display.newText("AAAAAAAAAAA", logic.houses["h" .. i].tempLabelPos.x, logic.houses["h" .. i].tempLabelPos.y, native.systemFont, 30)
+			newHouseLabel = display.newText("", logic.houses["h" .. i].tempLabelPos.x, logic.houses["h" .. i].tempLabelPos.y, native.systemFont, 30)
 			table.insert(houseTempLabels, {newHouseLabel})
 			everything:insert(newHouseLabel)
 		end
@@ -75,12 +74,9 @@ function scene:create(event)
 		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
 		shape = "roundedRect"
 	})
-
-	--text = display.newText("", 165, 25, native.systemFont, 25)
-	--print("X: " .. tostring(text.x) .. "\nY: " .. tostring(text.y))
-	levelTime = display.newText("", logic.levelTimePos.x, logic.levelTimePos.y, native.systemFont, 18)
 	
-	--everything:insert(text)
+	levelTime = display.newText("", logic.levelTimePos.x, logic.levelTimePos.y, native.systemFont, 18)
+
 	everything:insert(levelTime)
 	
 	fancy_log("Level " .. tostring(levelNumber) .. " created")
