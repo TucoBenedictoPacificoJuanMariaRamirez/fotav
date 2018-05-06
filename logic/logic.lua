@@ -1,7 +1,7 @@
 -- This file handles the logic of the main gameplay and
 -- provides the necessary solutions for that
 
-require("logic.mapProperties")
+require("logic.levelProperties")
 require("math")
 
 local logic = {}
@@ -12,6 +12,8 @@ logic.decrease = nil
 logic.time = nil
 logic.pipes = nil
 logic.houses = nil
+logic.levelImage = nil;
+logic.levelTimePos = nil;
 logic.timer = nil
 logic.isEnd = false
 logic.tappable = true
@@ -37,6 +39,8 @@ function createLevel(levelNum)
     logic.time = level.time
     logic.pipes = level.pipes
     logic.houses = level.houses
+	logic.levelImage = level.levelImage
+	logic.levelTimePos = level.levelTimePos
     logic.remaining = level.time
 
     initCurrentTemps()

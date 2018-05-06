@@ -70,7 +70,7 @@ function createGameDataFile(path)
 	fh = io.open( path, "w" )
  
 	if fh then
-		for i=1,23 do
+		for i = 1, 23 do
 		-- first field is the map[i]
 		-- second field is the rating, default 0
 		-- third field is the best time on that map
