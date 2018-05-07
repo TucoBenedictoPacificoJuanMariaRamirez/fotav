@@ -8,7 +8,7 @@ maps =
         envTemp = 20, --environment temperature
         limit = 4, --error limit
         decrease = 1, --decrease of house temperature per second
-        time = 50, --level gametime
+        time = 10, --level gametime
         pipes = { --table of pipes
             p1 = {
                 temp = 70, --water temperature
@@ -20,8 +20,8 @@ maps =
 					y = 185
 				},
 				btnPos = {
-					x = 160,
-					y = 400
+					x = 170,
+					y = 265
 				}
             }
         },

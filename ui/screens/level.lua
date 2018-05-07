@@ -8,6 +8,7 @@ local logic = require("logic.logic")
 
 local houseTempLabels = {}
 local pipeTempLabels = {}
+local pipeButtons = {}
 local levelTime = nil
 local levelTimer = nil
 local levelNumber = nil
@@ -50,7 +51,7 @@ function scene:create(event)
 	do
 		for i = 1, housesCount do
 			newHouseLabel = display.newText("", logic.houses["h" .. i].tempLabelPos.x, logic.houses["h" .. i].tempLabelPos.y, native.systemFont, 30)
-			table.insert(houseTempLabels, {newHouseLabel})
+			table.insert(houseTempLabels, newHouseLabel)
 			everything:insert(newHouseLabel)
 		end
 	end
@@ -58,22 +59,21 @@ function scene:create(event)
 	do
 		for i = 1, pipesCount do
 			newPipeLabel = display.newText(logic.pipes["p" .. i].temp, logic.pipes["p" .. i].tempLabelPos.x, logic.pipes["p" .. i].tempLabelPos.y, native.systemFont, 30)
-			--newPipeBtn = widget.newButton()
-			table.insert(pipeTempLabels, {newPipeLabel})
+			table.insert(pipeTempLabels, newPipeLabel)
 			everything:insert(newPipeLabel)
+			newPipeBtn = widget.newButton({
+				id = i,
+				x = logic.pipes["p" .. i].btnPos.x,
+				y = logic.pipes["p" .. i].btnPos.y,
+				radius = 30,
+				onEvent = logic.pipeTap,
+				fillColor = { default={ 0, 0, 0, 0.01 }, over={ 0, 0, 0, 0.01 } },
+				shape = "circle"
+			})
+			table.insert(pipeButtons, newPipeBtn)
+			everything:insert(newPipeBtn)
 		end
 	end
-	
-	cso = widget.newButton({
-		id = 1,
-		x = display.contentCenterX,
-		y = display.contentCenterY + 200,
-		width = 150,
-		height = 35,
-		onEvent = logic.pipeTap,
-		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
-		shape = "roundedRect"
-	})
 	
 	levelTime = display.newText("", logic.levelTimePos.x, logic.levelTimePos.y, native.systemFont, 18)
 
@@ -94,7 +94,7 @@ function scene:show(event)
     -- Code here runs when the scene is entirely on screen
 		local function updateUI()
 			for i = 1, housesCount do
-				houseTempLabels[i][1].text = logic.getCurrentTempOf("h" .. i)
+				houseTempLabels[i].text = logic.getCurrentTempOf("h" .. i)
 			end
 			--text.text = logic.getCurrentTempOf("h1")
 			if logic.remaining < 0.005 then
@@ -123,7 +123,6 @@ function scene:hide(event)
 
 	if (phase == "will") then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
-		cso.isVisible = false
 	elseif (phase == "did") then
 		-- Code here runs immediately after the scene goes entirely off screen
 		if (levelTimer ~= nil) then

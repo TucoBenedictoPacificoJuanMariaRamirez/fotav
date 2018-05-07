@@ -51,3 +51,6 @@ TODO list:
  * logic: isEnd, endCheck()
           isWithinError() tesztelése
           rating() tesztelése
+ * @Martin level.lua 32. 33. sor
+ * A random felhős mókát bele lehet rakni a master-be, ha már jól megy
+ * @Szabi a maps screen-t kéne még fixálni (drag/click, zoom, minden kerületre lehessen kattolni)
