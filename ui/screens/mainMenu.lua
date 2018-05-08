@@ -8,7 +8,9 @@ local staticImages = nil
 local toMapsBtn = nil
 
 local cloudGroup = nil
-local cloudTimer = nil
+-- local carGroup = nil
+-- local carLanes = { 420, 440, 470, 490 }
+local animationTimer = nil
 
 function createCloud(group, isInit)
     local x = nil
@@ -19,7 +21,7 @@ function createCloud(group, isInit)
     if isInit then
       x = math.random(display.actualContentWidth)
     else
-      x = math.random(-50, 0)
+      x = -100
     end
     y = math.random(-50, 150)
     scale = math.random(10, 15)/100
@@ -32,8 +34,38 @@ function createCloud(group, isInit)
     cloudHolder.group.x = x
     cloudHolder.group.y = y
     scene.view:insert(cloudHolder.group)
-    table.insert(cloudGroup, cloudHolder)
+    table.insert(group, cloudHolder)
 end
+
+-- function createCar(group, isInit)
+--     local x = nil
+--     local y = nil
+--     local scale = nil
+--     local picNum = nil
+--
+--     local lane = math.random(1, 4)
+--     y = carLanes[lane]
+--     scale = 0.05
+--
+--     picNum = math.random(1,3)
+--
+--     -- To be able to index children of the group
+--     local carHolder = { group=display.newGroup(), speed=0 }
+--
+--     if lane > 2 then
+--       if isInit then x = math.random(display.actualContentWidth) else x = -50 end
+--       carHolder.speed = math.random(16,20)/10
+--       carHolder.group.xScale = -1
+--     else
+--       if isInit then x = math.random(display.actualContentWidth) else x = display.actualContentWidth + 50 end
+--       carHolder.speed = -1 * math.random(16,20)/10
+--     end
+--     carHolder.group:insert(loadImage("assets/start_screen/car_0"..picNum..".png", scale, 0, 0))
+--     carHolder.group.x = x
+--     carHolder.group.y = y
+--     scene.view:insert(carHolder.group)
+--     table.insert(group, carHolder)
+-- end
 
 function createGroup(parent)
     local g = display.newGroup()
@@ -58,11 +90,17 @@ end
 function scene:create(event)
     local rootGroup = self.view
     cloudGroup = {} --createGroup(rootGroup)
+    -- carGroup = {}
 
     local cloudNumber = math.random(4, 6)
     for i=1, cloudNumber do
         createCloud(cloudGroup, true)
     end
+
+    -- local carNumber = math.random(4, 6)
+    -- for i=1, carNumber do
+    --     createCar(carGroup, true)
+    -- end
 
     local function handleEvent(event)
         local options = {
@@ -112,23 +150,36 @@ function scene:show(event)
         for k,v in pairs(cloudGroup) do
             v.group.x = v.group.x + v.speed
         end
+        -- for k,v in pairs(carGroup) do
+        --     v.group.x = v.group.x + v.speed
+        -- end
     end
     local function delete()
         local count = 0
         for _ in pairs(cloudGroup) do count = count + 1 end
         for i=count, 1, -1 do
-            if cloudGroup[i].group.x > display.actualContentWidth then
+            if cloudGroup[i].group.x > display.actualContentWidth + 100 then
                 cloudGroup[i].group:removeSelf()
                 cloudGroup[i].group = nil
                 table.remove(cloudGroup, i)
                 createCloud(cloudGroup, false)
             end
         end
+        -- count = 0
+        -- for _ in pairs(carGroup) do count = count + 1 end
+        -- for i=count, 1, -1 do
+        --     if ((carGroup[i].speed > 0) and (carGroup[i].group.x > display.actualContentWidth + 50)) or ((carGroup[i].speed < 0) and (carGroup[i].group.x < -50)) then
+        --         carGroup[i].group:removeSelf()
+        --         carGroup[i].group = nil
+        --         table.remove(carGroup, i)
+        --         createCar(carGroup, false)
+        --     end
+        -- end
     end
 
     if (phase == "will") then
         -- Code here runs when the scene is still off screen (but is about to come on screen)
-        cloudTimer = timer.performWithDelay(1000 / 60, function() move() delete() end, 0)
+        animationTimer = timer.performWithDelay(1000 / 60, function() move() delete() end, 0)
     elseif (phase == "did") then
         -- Code here runs when the scene is entirely on screen
         toMapsBtn.isVisible = true
@@ -144,7 +195,7 @@ function scene:hide(event)
         toMapsBtn.isVisible = false
     elseif (phase == "did") then
         -- Code here runs immediately after the scene goes entirely off screen
-        timer.cancel(cloudTimer)
+        timer.cancel(animationTimer)
     end
 end
 
