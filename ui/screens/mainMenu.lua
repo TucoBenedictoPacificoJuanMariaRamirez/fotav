@@ -16,7 +16,7 @@ function scene:create(event)
   local function handleEvent(event)
     local options = {
       effect = "slideDown",
-      time = 1000,
+      time = 800,
     }
     composer.gotoScene("ui.screens.maps", options)
   end

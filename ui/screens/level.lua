@@ -105,7 +105,14 @@ function scene:show(event)
 			
 			if not logic.tappable then 
 				timer.cancel(levelTimer)
-				composer.gotoScene("ui.screens.endGame")
+				local endGameOptions = {
+				  effect = "fromTop",
+				  time = 500,
+				  params = {
+					  score = 2
+				  }
+				}
+				composer.gotoScene("ui.screens.endGame", endGameOptions)
 			end
 		end
 

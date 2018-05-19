@@ -3,6 +3,9 @@
 local composer = require("composer")
 local widget = require("widget")
 local endGameScene = composer.newScene()
+local endGameText = nil
+local score = nil
+local background = nil
 
 function handleEvent()
 	composer.gotoScene("ui.screens.maps")
@@ -11,10 +14,15 @@ end
 function endGameScene:create(event)
 	local everything = self.view
 	local params = event.params
+	score = params.score
+	
+	background = display.newImageRect( "assets/map/map_with_districts.png", 320, 570 )
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
+	everything:insert(background)
 	
 	-- Remove level scene, so it will be recreated again for the next game
 	composer.removeScene("ui.screens.level")
-	text = display.newText("THIS IS THE ENDGAME SCREEN", display.contentCenterX, display.contentCenterY, native.systemFont, 15)
 	
 	mainMenuBtn = widget.newButton(
 		{
@@ -33,8 +41,18 @@ end
 
 function endGameScene:show(event)
 	local everything = self.view
-	
+	if score == 0 then
+		endGameText = display.newText("Hát ez most nem sikerült :(", display.contentCenterX, display.contentCenterY, native.systemFont, 20)
+	elseif score == 1 then
+		endGameText = display.newText("Majd legközelebb jobb lesz", display.contentCenterX, display.contentCenterY, native.systemFont, 20)
+	elseif score == 2 then
+		endGameText = display.newText("Szép eredmény", display.contentCenterX, display.contentCenterY, native.systemFont, 20)
+	elseif score == 3 then
+		endGameText = display.newText("Tökéletes! :)", display.contentCenterX, display.contentCenterY, native.systemFont, 20)
+	end
+		
 	mainMenuBtn.isVisible = true
+	background.isVisible = true
 	fancy_log("Endgame showed")
 end
 
@@ -42,7 +60,9 @@ function endGameScene:hide(event)
 	local everything = self.view
 	
 	mainMenuBtn.isVisible = false
-	display.remove(text)
+	background.isVisible = false
+	display.remove(endGameText)
+	
 	fancy_log("Endgame hid")
 end
 

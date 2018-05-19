@@ -1,6 +1,6 @@
 -- Fotav project
 
--- @authors
+-- @author
 -- Fehér Szabolcs
 -- Gál Martin
 -- Nagy Bence
@@ -11,6 +11,8 @@
 -- The composer manages the screens and everything related to them
 local composer = require("composer")
 
+--- This function provied better logging
+--@param message A message to print out to the console. nil check is done before printing
 function fancy_log(message)
 	if message == nil then
 		print("----------------------\n\tCannot log nil value, watch out!\t\n----------------------")

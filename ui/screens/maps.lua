@@ -4,6 +4,7 @@
 local composer = require("composer")
 local mapScene = composer.newScene()
 local widget = require("widget")
+require("logic.levelProperties")
 
 --local mainMenuBtn = nil
 
@@ -68,7 +69,13 @@ function mapScene:create(event)
 					level = string.match(event.target.id, "%d+")
 				}
 			}
-			composer.gotoScene("ui.screens.level", options)
+			
+			if canLoadLevel(string.match(event.target.id, "%d+")) == 1 then
+				composer.gotoScene("ui.screens.level", options)
+			else
+				-- show a little popup that level cannot be loaded
+				print("Level is not ready yet, cannot be loaded")
+			end
 			--fancy_log("Changed screen to " .. options.params.level)
 		end
 	end
@@ -76,6 +83,7 @@ function mapScene:create(event)
 		local screen = group
 		local phase = event.phase
 		if ( "began" == phase ) then
+			moved = false
 			-- Set touch focus on the screen
 			display.currentStage:setFocus( screen )
 			-- Store initial offset position
@@ -91,15 +99,15 @@ function mapScene:create(event)
 			print(screen.width)
 			print("BcGrWidht")
 			print(BcGrWidht)
+			
 			if(screen.x < screen.width ) then
 				screen.x = screen.width
-				
 			end
 			if(screen.x > BcGrWidht - screen.width ) then
 				screen.x = 0
-				
 			end
-
+			moved = true
+			print("moved = true")
 			--[[if(screen.y < screen.height) then
 				print("up")
 				screen.y = screen.height
@@ -110,12 +118,15 @@ function mapScene:create(event)
 				screen.y = display.contentHeight-screen.height
 				
 			end]]
-		elseif ( "ended" == phase or "cancelled" == phase ) then
+		elseif ( ("ended" == phase or "cancelled" == phase) and moved == false) then
 			-- Release touch focus on the screen
 			display.currentStage:setFocus( nil )
+			print("Click happened")
+			moved = false
 			-- SHOULD ONLY TRIGGER IF USER DID NOT DRAG TOO MUCH
 			handleLevelSelect(event)
 		end
+		
 		return true
 	end
 	--Constructs a button
@@ -124,7 +135,7 @@ function mapScene:create(event)
 			id = p_id,
 			x = p_x,
 			y = p_y,
-			fillColor = { default={1,0,0,0} , over={1,0,0,0} },
+			fillColor = { default={1,0,0,0.01} , over={1,0,0,0} },
 			vertices = p_vertices,
 			shape = "polygon"
 		})
@@ -145,7 +156,7 @@ function mapScene:create(event)
 	local function handleEvent(event)
 		local options = {
 		  effect = "slideUp",
-		  time = 3000,
+		  time = 800,
 		  params = {
 			  someKey = "someValue",
 			  someOtherKey = 10
@@ -171,8 +182,8 @@ function mapScene:create(event)
 
 	function zoomIn()
 	    if(group.xScale < 4 ) then
-			--group.xScale = group.xScale + 0.5
-			--group.yScale = group.yScale + 0.5
+			group.xScale = group.xScale + 0.5
+			group.yScale = group.yScale + 0.5
 			BcGrWidht = display.contentWidth * group.xScale
 			BcGrHeight = display.contentHeight * group.yScale
 			transition.to( title, {time=1000, transition=easing.inOutQuad, xScale=group.xScale + 0.5, yScale=group.yScale + 0.5, onComplete=group } )
@@ -263,6 +274,15 @@ end
 
 mapScene:addEventListener( "key", keyHandle )]]
 
+function canLoadLevel(n)
+	level = maps['l' .. n]
+	-- If the map cannot be loaded, this function returns -1
+	if level == nil then
+		return -1
+	else
+		return 1
+	end
+end
 
 mapScene:addEventListener("create", mapScene)
 mapScene:addEventListener("show", mapScene)
@@ -270,7 +290,6 @@ mapScene:addEventListener("hide", mapScene)
 mapScene:addEventListener("destroy", mapScene)
 
 return mapScene
-
 
 --Gives control to the main menu
 -- local function handleBackToMainMenu(event)
