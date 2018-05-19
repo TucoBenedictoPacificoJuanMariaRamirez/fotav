@@ -1,4 +1,5 @@
--- This screen apperas after one game finished
+--- end game scene - This screen apperas after one game finished
+--@module endGame
 
 local composer = require("composer")
 local widget = require("widget")

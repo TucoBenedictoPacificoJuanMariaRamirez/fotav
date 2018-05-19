@@ -1,5 +1,6 @@
 ----------------------------------------------
--- For storing map attributes (pipe-->houses)
+--- Level properties for storing map attributes (pipe-->houses)
+--@module levelProperties
 ----------------------------------------------
 
 maps =

@@ -1,5 +1,5 @@
--- 2018.04.15. New button-construction structure implemented	(daszabo)
--- This file contains the UI element objects for the maps screen
+--- Maps scene - This file contains the UI element objects for the maps screen
+-- @module maps
 
 local composer = require("composer")
 local mapScene = composer.newScene()
@@ -73,7 +73,7 @@ function mapScene:create(event)
 			if canLoadLevel(string.match(event.target.id, "%d+")) == 1 then
 				composer.gotoScene("ui.screens.level", options)
 			else
-				-- show a little popup that level cannot be loaded
+				composer.showOverlay("ui.screens.mapNotReadyOverlay")
 				print("Level is not ready yet, cannot be loaded")
 			end
 			--fancy_log("Changed screen to " .. options.params.level)

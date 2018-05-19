@@ -1,6 +1,7 @@
--- Fotav project
+--- Fotav project main file
+-- @module main
 
--- @author
+-- @author Fehér Szabolcs Gál Martin Nagy Bence Szabó Dániel
 -- Fehér Szabolcs
 -- Gál Martin
 -- Nagy Bence

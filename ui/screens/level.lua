@@ -1,3 +1,6 @@
+--- Generic level scene
+--@module level
+
 require("math")
 
 local composer = require("composer")

@@ -44,17 +44,34 @@ Ezzel a játék be is töltődött és elindult.
 
 ---
 
+### Dokumentáció generálás Ldoc segítségével
+
+#### Az Ldoc telepítése
+* Szükségünk lesz a Visual Studio Build tools-ra, amit elérhetünk innen: https://www.visualstudio.com/downloads/#build-tools-for-visual-studio-2017
+* Töltsük le a LuaRocks programot innen: http://luarocks.github.io/luarocks/releases/
+* Miután kicsomagoltuk, az install.bat-al tudjuk feltelepíteni (rendszergazdai jogra szükség lehet)
+* Ezek után a Visual Studio parancssorából (rendszergazdai) parancssorból adjuk ki a következő parancsokat:
+  * luarocks install luafilesystem
+  * luarocks install penlight
+  * luarocks install ldoc
+* Ezek után már tudjuk használni az ldoc parancsot (akár normál cmd ablakból is), feltéve, ha hozzáadtuk az elérését a Path rendszerváltozóhoz
+
+#### Az Ldoc használata
+* Nyissunk meg egy cmd ablakot
+* A következő paranccsal tudunk dokumentációt generálni:
+```luadoc -dir <output dir> <projekt root dir>```
+
+A Főtáv projekthez generált dokumentáció a projekt /doc könyvtárában található.
+---
+
 TODO list:
  * Vissza gomb implementációja
  * Pinch zoom (kétujjas zoom)
  * show/hide/destroy functionök logikája
-<<<<<<< HEAD
  * logic: isEnd, endCheck()
           isWithinError() tesztelése
           rating() tesztelése
  * @Martin level.lua 32. 33. sor
  * A random felhős mókát bele lehet rakni a master-be, ha már jól megy
  * @Szabi a maps screen-t kéne még fixálni (drag/click, zoom, minden kerületre lehessen kattolni)
-=======
  * homescreen felhők randomizálása
->>>>>>> scene-implementation

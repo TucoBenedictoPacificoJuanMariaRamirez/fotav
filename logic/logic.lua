@@ -1,6 +1,9 @@
 -- This file handles the logic of the main gameplay and
 -- provides the necessary solutions for that
 
+---logic
+--@module logic
+
 require("logic.levelProperties")
 require("math")
 

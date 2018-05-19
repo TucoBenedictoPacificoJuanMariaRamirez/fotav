@@ -1,4 +1,5 @@
-
+--- Main menu scene
+-- @module mainMenu
 
 local composer = require("composer")
 local scene = composer.newScene()
@@ -14,6 +15,9 @@ local cloudTimer = nil
 local carTimer = nil
 local carSpawner = nil
 
+--- This function initiates the main menu clouds
+--@param group The group object that contains all elements on this screen
+--@param isInit This flag sets if it is the first time this method is called
 function createCloud(group, isInit)
     local x = nil
     local y = nil
@@ -39,6 +43,9 @@ function createCloud(group, isInit)
     table.insert(group, cloudHolder)
 end
 
+--- This function initiates the main menu cars
+--@param group The group object that contains all elements on this screen
+--@param isInit This flag sets if it is the first time this method is called
 function createCar(group)
     local x = nil
     local y = nil
