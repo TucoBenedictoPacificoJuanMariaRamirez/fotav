@@ -16,7 +16,7 @@ function endGameScene:create(event)
 	local params = event.params
 	score = params.score
 	
-	background = display.newImageRect( "assets/map/map_with_districts.png", 320, 570 )
+	background = display.newImageRect( "assets/map/background.png", 320, 570 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 	everything:insert(background)
@@ -50,6 +50,7 @@ function endGameScene:show(event)
 	elseif score == 3 then
 		endGameText = display.newText("Tökéletes! :)", display.contentCenterX, display.contentCenterY, native.systemFont, 20)
 	end
+	everything:insert(endGameText)
 		
 	mainMenuBtn.isVisible = true
 	background.isVisible = true

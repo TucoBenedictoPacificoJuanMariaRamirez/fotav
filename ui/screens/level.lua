@@ -6,7 +6,6 @@ local widget = require("widget")
 
 local logic = require("logic.logic")
 
-<<<<<<< HEAD
 local houseTempLabels = {}
 local pipeTempLabels = {}
 local pipeButtons = {}
@@ -16,12 +15,6 @@ local levelNumber = nil
 
 local housesCount = nil
 local pipesCount = nil
-=======
-local text = nil
-local levelTime = nil
-local levelTimer = nil
-local ratingText = nil
->>>>>>> scene-implementation
 
 local function handleBackToMap(event)
 	if ("ended" == event.phase) then
@@ -41,7 +34,6 @@ function scene:create(event)
 		composer.removeScene("ui.screens.level")
 		return
 	end
-<<<<<<< HEAD
 	
 	housesCount = tableLength(logic.houses)
 	pipesCount = tableLength(logic.pipes)
@@ -89,29 +81,6 @@ function scene:create(event)
 	
 	fancy_log("Level " .. tostring(levelNumber) .. " created")
 	print("rating: "..rating())
-=======
-	--bg = display.newImageRect("assets/background.png", 360, 570)
-	-- load background from logic
-	-- load buttons from logic
-	cso = widget.newButton({
-		id = 1,
-		x = display.contentCenterX,
-		y = display.contentCenterY + 200,
-		width = 150,
-		height = 35,
-		onEvent = logic.pipeTap,
-		fillColor = { default={1,0,0,1}, over={1,0.1,0.7,0.4} },
-		shape = "roundedRect"
-	})
-
-	text = display.newText("", display.contentCenterX, cso.y-70, native.systemFont, 30)
-	levelTime = display.newText("", display.contentCenterX, 100, native.systemFont, 30)
-	ratingText = display.newText("rating: 0", display.contentCenterX, 100-30, native.systemFont, 15)
-	everything:insert(text)
-	everything:insert(levelTime)
-	everything:insert(ratingText)
-
->>>>>>> scene-implementation
 end
 
 function scene:show(event)
@@ -121,9 +90,8 @@ function scene:show(event)
 	if (phase == "will") then
     -- Code here runs when the scene is still off screen (but is about to come on screen)
 	logic.tappable = true
-  elseif (phase == "did") then
+    elseif (phase == "did") then
     -- Code here runs when the scene is entirely on screen
-<<<<<<< HEAD
 		local function updateUI()
 			for i = 1, housesCount do
 				houseTempLabels[i].text = logic.getCurrentTempOf("h" .. i)
@@ -131,56 +99,32 @@ function scene:show(event)
 			--text.text = logic.getCurrentTempOf("h1")
 			if logic.remaining < 0.005 then
 				levelTime.text = "--"
+				logic.tappable = false
 			else 
 				levelTime.text = math.floor(logic.remaining)
 			end
 			
-			if not logic.tappable then 
+			if not logic.tappable then
 				timer.cancel(levelTimer)
+				print("belemegy")
 				local endGameOptions = {
-				  effect = "fromTop",
+				  --effect = "fromTop",
 				  time = 500,
 				  params = {
-					  score = 2
+					  score = rating()
 				  }
 				}
 				composer.gotoScene("ui.screens.endGame", endGameOptions)
 			end
-=======
-	local function updateText()
-		text.text = logic.getCurrentTempOf("h1")
-		s="rating: "
-		cnt=rating()
-		for i=1, cnt do
-			s = s.."*"
 		end
-		ratingText.text =  s
-							
-		if logic.remaining < logic.ms/1000 then
-			levelTime.text = "Game over!"
-		else 
-			levelTime.text = math.floor(logic.remaining)
-		end
-		
-		if not logic.tappable then 
-			timer.cancel(levelTimer)
->>>>>>> scene-implementation
-		end
-	end
 
-    levelTimer = timer.performWithDelay(logic.ms, updateText, (logic.remaining)*1000/logic.ms+1)
-	logicTimer(logic.time)
-	endCheck()
-
-<<<<<<< HEAD
 		local ms = 10
 		levelTimer = timer.performWithDelay(ms, updateUI, (logic.remaining)*1000/ms)
 		logicTimer(logic.time)
 		endCheck()
-=======
->>>>>>> scene-implementation
-  end
-  fancy_log("Level " .. tostring(levelNumber) .. " showed")
+		
+	end
+	fancy_log("Level " .. tostring(levelNumber) .. " showed")
 end
 
 function scene:hide(event)

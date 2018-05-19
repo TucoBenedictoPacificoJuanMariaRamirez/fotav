@@ -14,19 +14,6 @@ local cloudTimer = nil
 local carTimer = nil
 local carSpawner = nil
 
-<<<<<<< HEAD
-function scene:create(event)
-  local everything = self.view
-
-  local function handleEvent(event)
-    local options = {
-      effect = "slideDown",
-      time = 800,
-    }
-    composer.gotoScene("ui.screens.maps", options)
-  end
-  local function loadImage(file, scale, x, y)
-=======
 function createCloud(group, isInit)
     local x = nil
     local y = nil
@@ -91,7 +78,6 @@ function createGroup(parent)
 end
 
 function loadImage(file, scale, x, y)
->>>>>>> scene-implementation
     -- Load img temporarily using deprecated function to get the dimensions
     local temp = display.newImage(file)
     local sizeX, sizeY = temp.width, temp.height
@@ -200,41 +186,6 @@ function scene:show(event)
         -- Code here runs when the scene is entirely on screen
         toMapsBtn.isVisible = true
     end
-<<<<<<< HEAD
-    move(cloudsClose, 0.8)
-    move(cloudsMiddle, 0.6)
-    move(cloudsFar, 0.3)
-  end
-
-  if (phase == "will") then
-    -- Code here runs when the scene is still off screen (but is about to come on screen)
-  elseif (phase == "did") then
-    -- Code here runs when the scene is entirely on screen
-    animationTimer = timer.performWithDelay(1000 / 60, animateClouds, 0)
-    toMapsBtn.isVisible = true
-  end
-  fancy_log("Main Menu showed")
-end
-
-function scene:hide(event)
-  local everything = self.view
-  local phase = event.phase
-
-  if (phase == "will") then
-    -- Code here runs when the scene is on screen (but is about to go off screen)
-    toMapsBtn.isVisible = false
-  elseif (phase == "did") then
-    -- Code here runs immediately after the scene goes entirely off screen
-    timer.cancel(animationTimer)
-  end
-  fancy_log("Main Menu hid")
-end
-
-function scene:destroy(event)
-  local sceneGroup = self.view
-  -- Code here runs prior to the removal of scene's view
-  fancy_log("Main Menu destroyed")
-=======
 end
 
 function scene:hide(event)
@@ -250,15 +201,14 @@ function scene:hide(event)
         timer.cancel(carTimer)
         timer.cancel(carSpawner)
     end
+	fancy_log("Main Menu is hid")
 end
 
 function scene:destroy(event)
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view
->>>>>>> scene-implementation
+	fancy_log("Main Menu destroyed")
 end
-
-
 
 scene:addEventListener("create", scene)
 scene:addEventListener("show", scene)

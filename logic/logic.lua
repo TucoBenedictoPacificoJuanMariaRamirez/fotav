@@ -174,19 +174,6 @@ end
 function logicTimer(count)
     t = timer.performWithDelay(logic.ms
             , function()
-<<<<<<< HEAD
-                if count >= 0.005 then
-                    count = count-ms/1000
-                    logic.remaining = count
-                    print(logic.remaining)
-                    cooling(1)
-                else 
-                    logic.tappable = false
-					isEnd = true
-                    print(logic.tappable)
-                end
-                logic.tapCoolDown = false
-=======
                 if not isEnd then
                     if count >= 0.005 then
                         count = count-logic.ms/1000
@@ -195,8 +182,7 @@ function logicTimer(count)
                         logic.tappable = false
                     end
                     logic.tapCoolDown = false
-                end 
->>>>>>> scene-implementation
+                end
             end
             , (count*1000/logic.ms)
         )
