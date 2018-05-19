@@ -1,15 +1,20 @@
--- This file contains the UI element objects for the main Menu
+
 
 local composer = require("composer")
 local scene = composer.newScene()
 local widget = require("widget")
 
-local animationTimer = nil
-local cloudsClose, cloudsMiddle, cloudsFar = nil
 local staticImages = nil
 local toMapsBtn = nil
 
+local cloudGroup = nil
+local carGroup = nil
+local carLanes = { 420, 440, 470, 490 }
+local cloudTimer = nil
+local carTimer = nil
+local carSpawner = nil
 
+<<<<<<< HEAD
 function scene:create(event)
   local everything = self.view
 
@@ -21,6 +26,72 @@ function scene:create(event)
     composer.gotoScene("ui.screens.maps", options)
   end
   local function loadImage(file, scale, x, y)
+=======
+function createCloud(group, isInit)
+    local x = nil
+    local y = nil
+    local scale = nil
+    local picNum = nil
+
+    if isInit then
+      x = math.random(display.actualContentWidth)
+    else
+      x = -100
+    end
+    y = math.random(-50, 150)
+    scale = math.random(10, 15)/100
+
+    picNum = math.random(1,3)
+
+    -- To be able to index children of the group
+    local cloudHolder = { group=display.newGroup(), speed=math.random(10,20)/10 }
+    cloudHolder.group:insert(loadImage("assets/start_screen/cloud_0"..picNum..".png", scale, 0, 0))
+    cloudHolder.group.x = x
+    cloudHolder.group.y = y
+    scene.view:insert(cloudHolder.group)
+    table.insert(group, cloudHolder)
+end
+
+function createCar(group)
+    local x = nil
+    local y = nil
+    local scale = nil
+    local picNum = nil
+
+    local lane = math.random(1, 4)
+    y = carLanes[lane]
+    scale = 0.05
+
+    picNum = math.random(1,3)
+
+    -- To be able to index children of the group
+    local carHolder = { group=display.newGroup(), speed=0 }
+
+    if lane > 2 then
+      x = -50
+      carHolder.speed = math.random(16,20)/10
+      carHolder.group.xScale = -1
+    else
+      x = display.actualContentWidth + 50
+      carHolder.speed = -1 * math.random(16,20)/10
+    end
+    carHolder.group:insert(loadImage("assets/start_screen/car_0"..picNum..".png", scale, 0, 0))
+    carHolder.group.x = x
+    carHolder.group.y = y
+    scene.view:insert(carHolder.group)
+    table.insert(group, carHolder)
+end
+
+function createGroup(parent)
+    local g = display.newGroup()
+    g.x = 0
+    g.y = 0
+    parent:insert(g)
+    return g
+end
+
+function loadImage(file, scale, x, y)
+>>>>>>> scene-implementation
     -- Load img temporarily using deprecated function to get the dimensions
     local temp = display.newImage(file)
     local sizeX, sizeY = temp.width, temp.height
@@ -29,83 +100,107 @@ function scene:create(event)
     img.x = x
     img.y = y
     return img
-  end
-  local function fillWithCloseClouds(group)
-    group[1]:insert(loadImage("assets/start_screen/cloud_01.png", 0.12, 80, -170))
-    group[1]:insert(loadImage("assets/start_screen/cloud_02.png", 0.12, -80, -200))
-    group[2]:insert(loadImage("assets/start_screen/cloud_01.png", 0.12, 80, -170))
-    group[2]:insert(loadImage("assets/start_screen/cloud_02.png", 0.12, -80, -200))
-    group[2].x = group[2].x - display.actualContentWidth
-  end
-  local function fillWithMiddleClouds(group)
-    group[1]:insert(loadImage("assets/start_screen/cloud_03.png", 0.08, -20, -120))
-    group[2]:insert(loadImage("assets/start_screen/cloud_03.png", 0.08, -20, -120))
-    group[2].x = group[2].x - display.actualContentWidth
-  end
-  local function fillWithFarClouds(group)
-    group[1]:insert(loadImage("assets/start_screen/cloud_04.png", 0.06, -100, -100))
-    group[1]:insert(loadImage("assets/start_screen/cloud_05.png", 0.06, 60, -80))
-    group[2]:insert(loadImage("assets/start_screen/cloud_04.png", 0.06, -100, -100))
-    group[2]:insert(loadImage("assets/start_screen/cloud_05.png", 0.06, 60, -80))
-    group[2].x = group[2].x - display.actualContentWidth
-  end
-  local function initGroup(parent)
-  	local g = display.newGroup()
-  	g.x = display.contentCenterX
-  	g.y = display.contentCenterY
-    parent:insert(g)
-  	return g
-  end
+end
 
-  toMapsBtn = widget.newButton({
-    width = display.actualContentWidth,
-    height = display.actualContentHeight,
-    x = display.contentCenterX,
-    y = display.contentCenterY,
-    onRelease = handleEvent,
-    fillColor = { default={1,1,1,0.01}, over={0,0,0,0} },
-    shape = "rect",
-  })
-  do -- initialize groups
-    staticImages = initGroup(everything)
-    cloudsClose = {initGroup(everything), initGroup(everything)}
-    cloudsMiddle = {initGroup(everything), initGroup(everything)}
-    cloudsFar = {initGroup(everything), initGroup(everything)}
-  end
-  do -- load static images
-    staticImages:insert(loadImage("assets/start_screen/background_blue.png", 0.15 , 0, 0))
-    staticImages:insert(loadImage("assets/start_screen/tap.png", 0.16, 0, -35))
-    staticImages:insert(loadImage("assets/start_screen/road.png", 0.284, 0, 220))
-    staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.1, -80, 60))
-    staticImages:insert(loadImage("assets/start_screen/building_green.png", 0.1, -20, 70))
-    staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.08, 100, 70))
-    staticImages:insert(loadImage("assets/start_screen/building_purple.png", 0.08, 40, 60))
-    staticImages:insert(loadImage("assets/start_screen/building_yellow.png", 0.08, -140, 100))
-    staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.08, -90, 120))
-    staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.1, 20, 110))
-    staticImages:insert(loadImage("assets/start_screen/building_darkgreen.png", 0.08, 130, 100))
-    staticImages:insert(loadImage("assets/start_screen/sun.png", 0.06, 100, -220))
-  end
-  do -- load clouds
-    fillWithCloseClouds(cloudsClose)
-    fillWithMiddleClouds(cloudsMiddle)
-    fillWithFarClouds(cloudsFar)
-  end
-  fancy_log("Main Menu created")
+
+function scene:create(event)
+    local rootGroup = self.view
+    cloudGroup = {} --createGroup(rootGroup)
+    carGroup = {}
+
+    local cloudNumber = math.random(4, 6)
+    for i=1, cloudNumber do
+        createCloud(cloudGroup, true)
+    end
+
+    local function handleEvent(event)
+        local options = {
+        effect = "slideDown",
+        time = 1000,
+        }
+        composer.gotoScene("ui.screens.maps", options)
+    end
+
+    toMapsBtn = widget.newButton({
+        width = display.actualContentWidth,
+        height = display.actualContentHeight,
+        x = display.contentCenterX,
+        y = display.contentCenterY,
+        onRelease = handleEvent,
+        fillColor = { default={1,1,1,0.01}, over={0,0,0,0} },
+        shape = "rect",
+    })
+
+    staticImages = createGroup(rootGroup)
+
+    do -- load static images
+        staticImages:insert(loadImage("assets/start_screen/background_blue.png", 0.15 , 160, 240))
+        staticImages:insert(loadImage("assets/start_screen/tap.png", 0.16, 160, 205))
+        staticImages:insert(loadImage("assets/start_screen/road.png", 0.284, 160, 460))
+        staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.1, 80, 300))
+        staticImages:insert(loadImage("assets/start_screen/building_green.png", 0.1, 140, 310))
+        staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.08, 260, 310))
+        staticImages:insert(loadImage("assets/start_screen/building_purple.png", 0.08, 200, 300))
+        staticImages:insert(loadImage("assets/start_screen/building_yellow.png", 0.08, 20, 340))
+        staticImages:insert(loadImage("assets/start_screen/building_blue.png", 0.08, 70, 360))
+        staticImages:insert(loadImage("assets/start_screen/building_red.png", 0.1, 180, 350))
+        staticImages:insert(loadImage("assets/start_screen/building_darkgreen.png", 0.08, 290, 340))
+        staticImages:insert(loadImage("assets/start_screen/sun.png", 0.06, 260, 20))
+    end
+
+    fancy_log("Main Menu created")
 end
 
 function scene:show(event)
-  local everything = self.view
-  local phase = event.phase
-  local function animateClouds()
-    local function move(chunk, speed)
-      for k,v in pairs(chunk) do
-        v.x = v.x + speed
-        if v.x > display.contentCenterX + display.actualContentWidth then
-          v.x = display.contentCenterX - display.actualContentWidth
+    local rootGroup = self.view
+    local phase = event.phase
+
+    local function cloudAnimation()
+        for k,v in pairs(cloudGroup) do
+            v.group.x = v.group.x + v.speed
         end
+        local count = 0
+        for _ in pairs(cloudGroup) do count = count + 1 end
+        for i=count, 1, -1 do
+            if cloudGroup[i].group.x > display.actualContentWidth + 100 then
+                cloudGroup[i].group:removeSelf()
+                cloudGroup[i].group = nil
+                table.remove(cloudGroup, i)
+                createCloud(cloudGroup, false)
+            end
+        end
+    end
+
+    local function carAnimation()
+      for k,v in pairs(carGroup) do
+          v.group.x = v.group.x + v.speed
+      end
+      local count = 0
+      for _ in pairs(carGroup) do count = count + 1 end
+      for i=count, 1, -1 do
+          if ((carGroup[i].speed > 0) and (carGroup[i].group.x > display.actualContentWidth + 50)) or ((carGroup[i].speed < 0) and (carGroup[i].group.x < -50)) then
+              carGroup[i].group:removeSelf()
+              carGroup[i].group = nil
+              table.remove(carGroup, i)
+          end
       end
     end
+
+    local function spawnScheduler()
+      carSpawner = timer.performWithDelay(math.random(1000, 2500), spawnScheduler, 1)
+      createCar(carGroup)
+    end
+
+    if (phase == "will") then
+        -- Code here runs when the scene is still off screen (but is about to come on screen)
+        cloudTimer = timer.performWithDelay(1000 / 60, cloudAnimation, 0)
+        carTimer = timer.performWithDelay(1000 / 60, carAnimation, 0)
+        carSpawner = timer.performWithDelay(2000, spawnScheduler, 1)
+    elseif (phase == "did") then
+        -- Code here runs when the scene is entirely on screen
+        toMapsBtn.isVisible = true
+    end
+<<<<<<< HEAD
     move(cloudsClose, 0.8)
     move(cloudsMiddle, 0.6)
     move(cloudsFar, 0.3)
@@ -139,31 +234,30 @@ function scene:destroy(event)
   local sceneGroup = self.view
   -- Code here runs prior to the removal of scene's view
   fancy_log("Main Menu destroyed")
+=======
 end
 
--- local function transition(isGoingToBeCurrent)
---   if isGoingToBeCurrent then
---     init()
---     everything.y = display.actualContentHeight
---   else
---     everything.y = 0
---   end
---   transitionTimer = timer.performWithDelay(1000 / 60,
---     function()
---       if isGoingToBeCurrent then
---         everything.y = everything.y - 3
---         if everything.y <= 0 then
---           timer.cancel(transitionTimer)
---         end
---       else
---         everything.y = everything.y + 3
---         if everything.y >= display.actualContentHeight then
---           hide()
---           timer.cancel(transitionTimer)
---         end
---       end
---     end, 0)
--- end
+function scene:hide(event)
+    local rootGroup = self.view
+    local phase = event.phase
+
+    if (phase == "will") then
+        -- Code here runs when the scene is on screen (but is about to go off screen)
+        toMapsBtn.isVisible = false
+    elseif (phase == "did") then
+        -- Code here runs immediately after the scene goes entirely off screen
+        timer.cancel(cloudTimer)
+        timer.cancel(carTimer)
+        timer.cancel(carSpawner)
+    end
+end
+
+function scene:destroy(event)
+    local sceneGroup = self.view
+    -- Code here runs prior to the removal of scene's view
+>>>>>>> scene-implementation
+end
+
 
 
 scene:addEventListener("create", scene)
