@@ -1,6 +1,7 @@
 Főtáv
 ======
 FŐTÁV pályázatára készített Corona Labs keretrendszeren fejlesztett promóciós játék
+Jelenleg játszható pályák: I-III. kerület
 
 ### Bevezetés
 A játék a Corona Labs által fejlesztett Corona Cross-Platfrom Engine használatával készült.
@@ -40,7 +41,6 @@ Ezzel a játék be is töltődött és elindult.
 * A térkép jelenlegi hibáinak javítása, a kezelés fejlesztése.
 
 * Tesztesetek írása az alkalmazás minden részéhez (maga a Unit tesztek alapjai már megvannak).
-* LDoc használata a source dokumentáció elkészítéséhez.
 
 ---
 
@@ -62,6 +62,9 @@ Ezzel a játék be is töltődött és elindult.
 ```luadoc -dir <output dir> <projekt root dir>```
 
 A Főtáv projekthez generált dokumentáció a projekt /doc könyvtárában található.
+
+Referencia:
+https://stevedonovan.github.io/ldoc/manual/doc.md.html
 ---
 
 TODO list:

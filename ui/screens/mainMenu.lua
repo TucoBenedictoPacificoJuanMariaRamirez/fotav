@@ -76,6 +76,8 @@ function createCar(group)
     table.insert(group, carHolder)
 end
 
+--- This function creates a generic group
+--@param parent The parent object of this group
 function createGroup(parent)
     local g = display.newGroup()
     g.x = 0
@@ -84,6 +86,11 @@ function createGroup(parent)
     return g
 end
 
+--- This function loads a given image file from the assets
+--@param file The path of the image file
+--@param scale The scaling of the image
+--@param x X position of the image
+--@param y Y position of the image
 function loadImage(file, scale, x, y)
     -- Load img temporarily using deprecated function to get the dimensions
     local temp = display.newImage(file)
@@ -95,7 +102,8 @@ function loadImage(file, scale, x, y)
     return img
 end
 
-
+--- This function creates the scene the first time before it's used
+--@param event The event object on which this function was called
 function scene:create(event)
     local rootGroup = self.view
     cloudGroup = {} --createGroup(rootGroup)
@@ -144,6 +152,9 @@ function scene:create(event)
     fancy_log("Main Menu created")
 end
 
+--- This function handles what happens when this scene is shown.
+-- It always runs after the first create function
+--@param event The event object on which this function was called
 function scene:show(event)
     local rootGroup = self.view
     local phase = event.phase
@@ -195,6 +206,8 @@ function scene:show(event)
     end
 end
 
+--- This function handles what happens when this scene is going to be hidden
+--@param event The event object on which this function was called
 function scene:hide(event)
     local rootGroup = self.view
     local phase = event.phase
@@ -211,6 +224,8 @@ function scene:hide(event)
 	fancy_log("Main Menu is hid")
 end
 
+--- This function runs only when this scene is explicitly destroyed
+--@param event The event object on which this function was called
 function scene:destroy(event)
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view

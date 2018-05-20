@@ -29,7 +29,8 @@ count = 0
 --storing current house temperatures (table of {house, temp})
 currentTemps = {}
 
---loading a level, init level attributes
+---Loading a level, init level attributes
+--@param levelNum The number of the level to load
 function createLevel(levelNum)
     print("----------------------------------------------")
     print ("Creating level " .. levelNum .. "...")
@@ -63,7 +64,8 @@ function initCurrentTemps()
     end
 end
 
---called by the eventListener on tap if the flag is not set
+--This function is called by the eventListener on tap if the flag is not set
+--@param event The event object that calls this function
 function pipeTap(event)
     if logic.tappable and not logic.tapCoolDown and not (event.phase=="ended") then
         print("tapped")
@@ -130,6 +132,7 @@ function isWithinError(house)
     return (c > g-l  and  c < g+l)
 end
 
+--- Check if the current game ended
 function endCheck()
     t = timer.performWithDelay(logic.ms
             , function()

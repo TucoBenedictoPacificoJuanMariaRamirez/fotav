@@ -25,6 +25,8 @@ local function handleBackToMap(event)
 	end
 end
 
+--- This function creates the scene the first time before it's used
+--@param event The event object on which this function was called
 function scene:create(event)
 	local everything = self.view
 	local params = event.params
@@ -70,7 +72,7 @@ function scene:create(event)
 				y = logic.pipes["p" .. i].btnPos.y,
 				radius = 30,
 				onEvent = logic.pipeTap,
-				fillColor = { default={ 0, 0, 0, 0.01 }, over={ 0, 0, 0, 0.01 } },
+				fillColor = { default={ 0, 0, 0, 0.1 }, over={ 0, 0, 0, 0.01 } },
 				shape = "circle"
 			})
 			table.insert(pipeButtons, newPipeBtn)
@@ -86,6 +88,9 @@ function scene:create(event)
 	print("rating: "..rating())
 end
 
+--- This function handles what happens when this scene is shown.
+-- It always runs after the first create function
+--@param event The event object on which this function was called
 function scene:show(event)
 	local everything = self.view
 	local phase = event.phase
@@ -130,6 +135,8 @@ function scene:show(event)
 	fancy_log("Level " .. tostring(levelNumber) .. " showed")
 end
 
+--- This function handles what happens when this scene is going to be hidden
+--@param event The event object on which this function was called
 function scene:hide(event)
 	local everything = self.view
 	local phase = event.phase
@@ -145,6 +152,8 @@ function scene:hide(event)
 	fancy_log("Level " .. tostring(levelNumber) .. " hid")
 end
 
+--- This function runs only when this scene is explicitly destroyed
+--@param event The event object on which this function was called
 function scene:destroy(event)
 	local sceneGroup = self.view
   -- Code here runs prior to the removal of scene's view

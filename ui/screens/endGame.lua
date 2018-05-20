@@ -12,6 +12,8 @@ function handleEvent()
 	composer.gotoScene("ui.screens.maps")
 end
 
+--- This function creates the scene the first time before it's used
+--@param event The event object on which this function was called
 function endGameScene:create(event)
 	local everything = self.view
 	local params = event.params
@@ -40,6 +42,9 @@ function endGameScene:create(event)
 	fancy_log("Endgame created")
 end
 
+--- This function handles what happens when this scene is shown.
+-- It always runs after the first create function
+--@param event The event object on which this function was called
 function endGameScene:show(event)
 	local everything = self.view
 	if score == 0 then
@@ -58,6 +63,8 @@ function endGameScene:show(event)
 	fancy_log("Endgame showed")
 end
 
+--- This function handles what happens when this scene is going to be hidden
+--@param event The event object on which this function was called
 function endGameScene:hide(event)
 	local everything = self.view
 	
@@ -68,6 +75,8 @@ function endGameScene:hide(event)
 	fancy_log("Endgame hid")
 end
 
+--- This function runs only when this scene is explicitly destroyed
+--@param event The event object on which this function was called
 function endGameScene:destroy(event)
 	local sceneGroup = self.view
 	fancy_log("Endgame destroyed")

@@ -44,7 +44,8 @@ local zoomOutBtn = nil
 local BcGrWidht = display.contentWidth
 local BcGrHeight = display.contentHeight
 
-
+--- This function creates the scene the first time before it's used
+--@param event The event object on which this function was called
 function mapScene:create(event)
   local everything = self.view
   local group = display.newGroup()
@@ -192,8 +193,8 @@ function mapScene:create(event)
 	zoomInBtn = widget.newButton({
 		label = "+",
 		labelColor = { default={ 1, 1, 1, 1}, over={ 0, 0, 0, 0.5 } },
-		x = display.contentWidth-20,
-		y =  display.contentWidth/50,
+		x = display.contentWidth - 40,
+		y = 40,
 		width = 30,
 		height = 30,
 		onPress = zoomIn,
@@ -213,8 +214,8 @@ function mapScene:create(event)
 	zoomOutBtn = widget.newButton(	{
 		label = "-",
 		labelColor = { default={ 1, 1, 1, 1}, over={ 0, 0, 0, 0.5 } },
-		x = display.contentWidth-20,
-		y =  (display.contentWidth/50)+40,
+		x = display.contentWidth - 40,
+		y = 80,
 		width = 30,
 		height = 30,
 		onPress = zoomOut,
@@ -229,6 +230,9 @@ function mapScene:create(event)
 	fancy_log("Maps created")
 end
 
+--- This function handles what happens when this scene is shown.
+-- It always runs after the first create function
+--@param event The event object on which this function was called
 function mapScene:show(event)
 	local everything = self.view
 	local phase = event.phase
@@ -243,6 +247,8 @@ function mapScene:show(event)
   fancy_log("Maps showed")
 end
 
+--- This function handles what happens when this scene is going to be hidden
+--@param event The event object on which this function was called
 function mapScene:hide(event)
 	local everything = self.view
 	local phase = event.phase
@@ -257,6 +263,8 @@ function mapScene:hide(event)
 	fancy_log("Maps hid")
 end
 
+--- This function runs only when this scene is explicitly destroyed
+--@param event The event object on which this function was called
 function mapScene:destroy(event)
 	local sceneGroup = self.view
   -- Code here runs prior to the removal of scene's view

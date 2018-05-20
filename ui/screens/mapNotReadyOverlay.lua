@@ -7,6 +7,8 @@ function handleEvent()
 	composer.gotoScene("ui.screens.maps")
 end
 
+--- This function creates the scene the first time before it's used
+--@param event The event object on which this function was called
 function mapNotReadyOverlay:create(event)
 	local everything = self.view
 	local params = event.params
@@ -23,12 +25,15 @@ function mapNotReadyOverlay:create(event)
 		width = display.actualContentWidth,
 		height = display.actualContentHeight,
 		onPress = handleEvent,
-		fillColor = { default={0,0,1,0.7}, over={1,0.15,0.2,0.5} },
+		fillColor = { default={0,0,0,0.8}, over={1,0.15,0.2,0.5} },
 		shape = "roundedRect"
 	})
 	fancy_log("Endgame created")
 end
 
+--- This function handles what happens when this scene is shown.
+-- It always runs after the first create function
+--@param event The event object on which this function was called
 function mapNotReadyOverlay:show(event)
 	local everything = self.view
 
@@ -36,6 +41,8 @@ function mapNotReadyOverlay:show(event)
 	fancy_log("Endgame showed")
 end
 
+--- This function handles what happens when this scene is going to be hidden
+--@param event The event object on which this function was called
 function mapNotReadyOverlay:hide(event)
 	local everything = self.view
 	
@@ -43,6 +50,8 @@ function mapNotReadyOverlay:hide(event)
 	fancy_log("Endgame hid")
 end
 
+--- This function runs only when this scene is explicitly destroyed
+--@param event The event object on which this function was called
 function mapNotReadyOverlay:destroy(event)
 	local sceneGroup = self.view
 	fancy_log("Endgame destroyed")
