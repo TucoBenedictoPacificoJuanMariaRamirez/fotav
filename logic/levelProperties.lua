@@ -28,7 +28,7 @@ maps =
         },
         houses = {
             h1 = {
-                goal = 70, --goal temperature
+                goal = 60, --goal temperature
 				tempLabelPos = {
 					x = 165,
 					y = 25

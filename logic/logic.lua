@@ -140,7 +140,7 @@ function endCheck()
                 if rating()==3 then
                     print("              vege")
                     isEnd = true
-                    --switch to endscreen
+                    logic.tappable = false
                 end
               end
         )

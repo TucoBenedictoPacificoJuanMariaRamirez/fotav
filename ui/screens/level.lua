@@ -114,7 +114,6 @@ function scene:show(event)
 			
 			if not logic.tappable then
 				timer.cancel(levelTimer)
-				print("belemegy")
 				local endGameOptions = {
 				  --effect = "fromTop",
 				  time = 500,
