@@ -45,8 +45,8 @@ function createLevel(levelNum)
     logic.time = level.time
     logic.pipes = level.pipes
     logic.houses = level.houses
-	logic.levelImage = level.levelImage
-	logic.levelTimePos = level.levelTimePos
+  	logic.levelImage = level.levelImage
+  	logic.levelTimePos = level.levelTimePos
     logic.remaining = level.time
 
     initCurrentTemps()
@@ -99,7 +99,7 @@ function rating()
                 optimal = optimal+1
             end
         end
-	end
+	  end
 
     -- ***: every houseTemp is optimal
     if optimal==count then
@@ -171,11 +171,12 @@ logic.setCurrentTempOf = setCurrentTempOf
 
 function cooling()
     for key, value in pairs(currentTemps) do
-        local house = value[1] 
+        local house = value[1]
         local toSet = (getCurrentTempOf(house)*100 + level.envTemp*1) / (100+1)
         setCurrentTempOf(house, round(toSet,1))
     end
 end
+logic.simulateCooling = cooling
 
 function logicTimer(count)
     t = timer.performWithDelay(logic.ms
@@ -184,7 +185,7 @@ function logicTimer(count)
                     if count >= 0.005 then
                         count = count-logic.ms/1000
                         logic.remaining = count
-                    else 
+                    else
                         logic.tappable = false
                     end
                     logic.tapCoolDown = false

@@ -29,9 +29,9 @@ maps =
         houses = {
             h1 = {
                 goal = 60, --goal temperature
-				tempLabelPos = {
-					x = 165,
-					y = 25
+        				tempLabelPos = {
+        					x = 165,
+        					y = 25
 				}
             }
         },
@@ -40,18 +40,18 @@ maps =
 			x = 200,
 			y = -20
 		},
-		
+
     },
 
     l2 = {
         envTemp = 20,
         limit = 4,
         decrease = 2,
-        time = 15, 
-        pipes = { 
+        time = 15,
+        pipes = {
             p1 = {
                 temp = 70,
-                houses = { 
+                houses = {
                     "h1"
                 },
 				tempLabelPos = {
@@ -92,18 +92,18 @@ maps =
 			x = 200,
 			y = -20
 		},
-		
+
     },
-	
+
 	l3 = {
         envTemp = 20,
         limit = 4,
         decrease = 2,
         time = 30,
-        pipes = { 
+        pipes = {
             p1 = {
                 temp = 70,
-                houses = { 
+                houses = {
                     "h1"
                 },
 				tempLabelPos = {

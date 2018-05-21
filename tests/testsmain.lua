@@ -1,6 +1,6 @@
 -- @module test
 require "tests.lunatest"
 
-lunatest.suite("tests.exampleSuite")
+lunatest.suite("tests.testSuite")
 
 lunatest.run()

@@ -51,4 +51,4 @@ end
 composer.gotoScene("ui.screens.mainMenu")
 
 -- Unit tests
--- require "tests.testsmain"
+require "tests.testsmain"
