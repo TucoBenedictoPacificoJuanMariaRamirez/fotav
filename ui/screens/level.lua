@@ -31,6 +31,8 @@ function scene:create(event)
 	local everything = self.view
 	local params = event.params
 	levelNumber = params.level
+	
+	logic.tappable = true
 
 	if logic.createLevel(params.level) < 0 then
 		print("ERROR: Level could not be loaded.")
@@ -122,6 +124,7 @@ function scene:show(event)
 				  }
 				}
 				composer.gotoScene("ui.screens.endGame", endGameOptions)
+				composer.removeScene("ui.screens.level")
 			end
 		end
 

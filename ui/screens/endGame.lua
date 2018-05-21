@@ -7,6 +7,8 @@ local endGameScene = composer.newScene()
 local endGameText = nil
 local score = nil
 local background = nil
+local empty_star1, empty_star2, empty_star3 = nil
+local star1, star2, star3 = nil
 
 function handleEvent()
 	composer.gotoScene("ui.screens.maps")
@@ -23,6 +25,39 @@ function endGameScene:create(event)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 	everything:insert(background)
+	
+	empty_star1 = display.newImageRect("assets/endscreen/star_line.png", 80, 80)
+	empty_star1.x = 70
+	empty_star1.y = 160
+	everything:insert(empty_star1)
+	
+	empty_star2 = display.newImageRect("assets/endscreen/star_line.png", 80, 80)
+	empty_star2.x = 150
+	empty_star2.y = 160
+	everything:insert(empty_star2)
+	
+	empty_star3 = display.newImageRect("assets/endscreen/star_line.png", 80, 80)
+	empty_star3.x = 230
+	empty_star3.y = 160
+	everything:insert(empty_star3)
+	
+	star1 = display.newImageRect("assets/endscreen/star.png", 80, 80)
+	star1.x = 70
+	star1.y = 160
+	everything:insert(star1)
+	star1.isVisible = false
+	
+	star2 = display.newImageRect("assets/endscreen/star.png", 80, 80)
+	star2.x = 150
+	star2.y = 160
+	everything:insert(star2)
+	star2.isVisible = false
+	
+	star3 = display.newImageRect("assets/endscreen/star.png", 80, 80)
+	star3.x = 230
+	star3.y = 160
+	everything:insert(star3)
+	star3.isVisible = false
 	
 	-- Remove level scene, so it will be recreated again for the next game
 	composer.removeScene("ui.screens.level")
@@ -48,16 +83,24 @@ end
 function endGameScene:show(event)
 	local everything = self.view
 	if score == 0 then
-		endGameText = display.newText("Hát ez most nem sikerült :(", display.contentCenterX, display.contentCenterY, native.systemFont, 20)
+		endGameText = display.newText("Hát ez most nem sikerült :(", display.contentCenterX, display.contentCenterY, native.systemFont, 25)
 	elseif score == 1 then
-		endGameText = display.newText("Majd legközelebb jobb lesz", display.contentCenterX, display.contentCenterY, native.systemFont, 20)
+		endGameText = display.newText("Majd legközelebb jobb lesz", display.contentCenterX, display.contentCenterY, native.systemFont, 25)
+		star1.isVisible = true
 	elseif score == 2 then
-		endGameText = display.newText("Szép eredmény", display.contentCenterX, display.contentCenterY, native.systemFont, 20)
+		endGameText = display.newText("Szép eredmény", display.contentCenterX, display.contentCenterY, native.systemFont, 25)
+		star1.isVisible = true
+		star2.isVisible = true
 	elseif score == 3 then
-		endGameText = display.newText("Tökéletes! :)", display.contentCenterX, display.contentCenterY, native.systemFont, 20)
+		endGameText = display.newText("Tökéletes! :)", display.contentCenterX, display.contentCenterY, native.systemFont, 25)
+		star1.isVisible = true
+		star2.isVisible = true
+		star3.isVisible = true
 	end
 	everything:insert(endGameText)
-		
+	
+	endGameText:setTextColor(60, 64, 10)
+	
 	mainMenuBtn.isVisible = true
 	background.isVisible = true
 	fancy_log("Endgame showed")
